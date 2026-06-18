@@ -41,7 +41,7 @@ const Toolbar = memo(({
   ]
 
   return (
-    <div className="flex items-center gap-3 px-5 py-2.5 border-b border-space-300 shrink-0 bg-space-800">
+    <div className="flex items-center gap-3 px-5 py-2.5 border-b border-space-300 shrink-0 bg-space-900/35 backdrop-blur-md">
       {/* Folder info */}
       <div className="flex items-center gap-2">
         <span

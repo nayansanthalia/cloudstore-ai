@@ -92,7 +92,11 @@ export async function queryFiles(
       QueryResultSchema.parse(result)
 
     return {
-      data: validated,
+      data: {
+        answer: validated.answer,
+        matches: validated.matches,
+        insight: validated.insight ?? null,
+      },
       error: null,
     }
   } catch (err) {

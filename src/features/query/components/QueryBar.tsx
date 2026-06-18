@@ -24,8 +24,8 @@ const SuggestionChip = memo(({ label, onClick, index }: SuggestionChipProps) => 
     onClick={onClick}
     className={cn(
       'px-3 py-1 rounded-full text-2xs font-medium',
-      'border border-space-300 text-slate-600',
-      'hover:border-brand-600/50 hover:text-slate-300 hover:bg-brand-950/40',
+      'border border-space-300 text-slate-400',
+      'hover:border-brand-600/50 hover:text-slate-200 hover:bg-brand-950/40',
       'transition-all duration-150 whitespace-nowrap',
       'focus-visible:outline-brand-500',
     )}
@@ -91,28 +91,28 @@ export const QueryBar = memo(() => {
     <div
       className={cn(
         'px-5 pt-4 pb-3 shrink-0',
-        'border-b border-space-300 bg-space-800',
+        'border-b border-space-300 bg-space-900/30 backdrop-blur-md',
       )}
     >
       {/* Search Input */}
       <motion.div
         animate={{
           borderColor: isLoading
-            ? 'rgba(37, 99, 235, 0.7)'
+            ? 'rgba(16, 185, 129, 0.7)'
             : isFocused
-              ? 'rgba(37, 99, 235, 0.4)'
-              : 'rgba(18, 32, 53, 1)',
+              ? 'rgba(37, 99, 235, 0.6)'
+              : 'rgba(255, 255, 255, 0.15)',
           boxShadow: isLoading
-            ? '0 0 0 3px rgba(37, 99, 235, 0.15)'
+            ? '0 0 16px rgba(16, 185, 129, 0.2)'
             : isFocused
-              ? '0 0 0 2px rgba(37, 99, 235, 0.1)'
-              : '0 0 0 0px transparent',
+              ? '0 0 16px rgba(37, 99, 235, 0.15)'
+              : '0 0 0px transparent',
         }}
         transition={{ duration: 0.2 }}
         className={cn(
           'flex items-center gap-3 px-4 rounded-xl',
-          'bg-space-600 border',
-          'transition-colors duration-200',
+          'bg-space-800/80 border',
+          'transition-all duration-200',
         )}
         style={{ height: 48 }}
       >
@@ -138,7 +138,7 @@ export const QueryBar = memo(() => {
           maxLength={MAX_QUERY_LENGTH}
           disabled={isLoading}
           className={cn(
-            'flex-1 bg-transparent text-sm text-slate-200 placeholder-slate-600',
+            'flex-1 bg-transparent text-sm text-slate-200 placeholder-slate-500',
             'outline-none border-none',
             'disabled:opacity-60',
           )}
@@ -216,7 +216,7 @@ export const QueryBar = memo(() => {
 
       {/* Suggestion Chips */}
       <div className="flex items-center gap-2 mt-3 overflow-x-auto pb-0.5 no-scrollbar">
-        <span className="text-2xs text-slate-800 shrink-0">Try:</span>
+        <span className="text-2xs text-slate-450 shrink-0">Try:</span>
         {SUGGESTED_QUERIES.slice(0, 6).map((s, i) => (
           <SuggestionChip
             key={s}

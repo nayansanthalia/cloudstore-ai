@@ -40,9 +40,9 @@ const GridCard = memo(({ file, index, onQuery, onStar }: {
       whileHover={{ y: -2, transition: { duration: 0.2 } }}
       className={cn(
         'group relative rounded-xl border border-space-300 p-3.5',
-        'bg-space-600 cursor-pointer',
-        'hover:border-space-200 hover:shadow-card-hover',
-        'transition-all duration-200',
+        'bg-space-800/40 cursor-pointer backdrop-blur-sm',
+        'hover:border-space-200 hover:shadow-card-hover hover:bg-space-700/40',
+        'transition-all duration-250 ease-out',
       )}
       onClick={onQuery}
     >
@@ -131,9 +131,9 @@ const ListRow = memo(({ file, index, onQuery, onStar }: {
       transition={{ delay: Math.min(index * 0.025, 0.3), duration: 0.3 }}
       className={cn(
         'group flex items-center gap-3 px-4 py-2.5 rounded-lg',
-        'bg-space-600 border border-space-300 cursor-pointer',
-        'hover:border-space-200 hover:bg-space-500',
-        'transition-all duration-150',
+        'bg-space-800/40 border border-space-300 cursor-pointer backdrop-blur-sm',
+        'hover:border-space-200 hover:bg-space-700/40 hover:shadow-card-hover',
+        'transition-all duration-200 ease-out',
       )}
       onClick={onQuery}
     >

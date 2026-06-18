@@ -101,7 +101,7 @@ export const PipelineViz = memo(({ currentStep }: PipelineVizProps) => {
       transition={{ duration: 0.3 }}
       className={cn(
         'rounded-xl border border-space-300 p-4 mb-3',
-        'bg-space-600',
+        'bg-space-800/45 backdrop-blur-md',
       )}
     >
       {/* Header */}

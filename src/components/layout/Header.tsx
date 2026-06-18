@@ -1,101 +1,58 @@
 import { motion } from 'framer-motion'
-import { Activity, Database, Files, HardDrive } from 'lucide-react'
+import { Bell, ChevronDown } from 'lucide-react'
 import { memo } from 'react'
 
 import { APP_NAME, APP_TAGLINE } from '@/constants'
 import { useStorageStore } from '@/features/storage/store/storageStore'
 import { cn } from '@/utils/cn'
 
-// ─── Stat Pill ─────────────────────────────────────────────────────────────
+// ─── Team Avatars ──────────────────────────────────────────────────────────
 
-interface StatPillProps {
-  icon: React.ReactNode
-  value: string
-  label: string
-  index: number
-}
-
-const StatPill = memo(({ icon, value, label, index }: StatPillProps) => (
-  <motion.div
-    initial={{ opacity: 0, y: -8 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.1 + index * 0.05, duration: 0.3 }}
-    className={cn(
-      'flex items-center gap-2 px-3 py-1.5 rounded-lg',
-      'bg-space-600 border border-space-300',
-      'hover:border-space-200 transition-colors duration-150',
-    )}
-  >
-    <span className="text-brand-500 w-3.5 h-3.5 shrink-0">{icon}</span>
-    <span className="text-xs font-bold text-brand-400 font-mono">{value}</span>
-    <span className="text-2xs text-slate-600">{label}</span>
-  </motion.div>
+const TeamAvatars = memo(() => (
+  <div className="flex items-center -space-x-2 shrink-0">
+    {[
+      { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=80', alt: 'Sarah' },
+      { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=80', alt: 'Michael' },
+      { src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=80', alt: 'Emma' },
+    ].map((u, i) => (
+      <img
+        key={i}
+        src={u.src}
+        alt={u.alt}
+        className="w-6 h-6 rounded-full border border-space-900 object-cover"
+      />
+    ))}
+    <div className="w-6 h-6 rounded-full bg-space-600 border border-space-300 flex items-center justify-center text-[10px] font-bold text-slate-400">
+      +3
+    </div>
+  </div>
 ))
-StatPill.displayName = 'StatPill'
-
-// ─── Online Status Dot ─────────────────────────────────────────────────────
-
-const StatusDot = memo(() => (
-  <span className="relative flex h-2 w-2">
-    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-  </span>
-))
-StatusDot.displayName = 'StatusDot'
+TeamAvatars.displayName = 'TeamAvatars'
 
 // ─── Header Component ──────────────────────────────────────────────────────
 
 export const Header = memo(() => {
-  const { files } = useStorageStore()
+  const { isConnected, userProfile } = useStorageStore()
 
-  // Calculate dynamic stats from real files
-  const totalFiles = files.length
-  const uniqueFolders = new Set(files.map((f) => f.folder))
-  const totalFolders = uniqueFolders.size
-
-  const totalSizeBytes = files.reduce((acc, f) => acc + (f.sizeBytes || 0), 0)
-  const formatBytes = (bytes: number): string => {
-    if (bytes === 0) return '0 KB'
-    const k = 1024
-    const sizes = ['B', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
+  // Default mockup user info if not connected
+  const mockUser = {
+    name: 'Alex Williamson',
+    email: 'williamson213@gmail.com',
+    picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=80',
   }
-  const totalSizeLabel = formatBytes(totalSizeBytes)
 
-  const stats = [
-    {
-      icon: <Files size={14} />,
-      value: String(totalFiles),
-      label: 'Files',
-    },
-    {
-      icon: <Database size={14} />,
-      value: String(totalFolders),
-      label: 'Folders',
-    },
-    {
-      icon: <HardDrive size={14} />,
-      value: totalSizeLabel,
-      label: 'Indexed',
-    },
-    {
-      icon: <Activity size={14} />,
-      value: '10K',
-      label: 'Q/day',
-    },
-  ]
+  const user = isConnected && userProfile ? userProfile : mockUser
 
   return (
     <header
       className={cn(
-        'flex items-center gap-3 px-5 shrink-0 z-10',
+        'flex items-center justify-between px-5 shrink-0 z-10',
         'border-b border-space-300',
-        'bg-gradient-to-b from-space-800 to-space-900',
+        'bg-space-900/60 backdrop-blur-md',
       )}
       style={{ height: 'var(--header-h)' }}
     >
-      {/* Logo */}
+      {/* Left: Brand Logo */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -120,28 +77,53 @@ export const Header = memo(() => {
         </div>
       </motion.div>
 
-      {/* Divider */}
-      <div className="h-6 w-px bg-space-300 mx-1 shrink-0" />
+      {/* Right: Actions, Avatars, Notifications, User Profile */}
+      <div className="flex items-center gap-5">
+        {/* Avatars group */}
+        <TeamAvatars />
 
-      {/* RAG Status */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="flex items-center gap-1.5 text-2xs text-slate-600"
-      >
-        <StatusDot />
-        <span>RAG Engine</span>
-      </motion.div>
+        {/* Vertical divider */}
+        <div className="h-4 w-px bg-space-300" />
 
-      {/* Spacer */}
-      <div className="flex-1" />
+        {/* Icons */}
+        <div className="flex items-center gap-3 text-slate-400">
+          {/* Status icon */}
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-space-800 border border-space-300 text-3xs font-semibold">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+            </span>
+            <span className="text-slate-500">{isConnected ? 'Drive Sync' : 'Mock Preview'}</span>
+          </div>
 
-      {/* Stats */}
-      <div className="flex items-center gap-2">
-        {stats.map((stat, i) => (
-          <StatPill key={stat.label} {...stat} index={i} />
-        ))}
+          {/* Notifications bell */}
+          <button className="relative p-1 rounded-md hover:bg-space-600 hover:text-slate-200 transition-colors">
+            <Bell size={15} />
+            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-rose-500 rounded-full" />
+          </button>
+        </div>
+
+        {/* Vertical divider */}
+        <div className="h-4 w-px bg-space-300" />
+
+        {/* User Card matching Sample 1 */}
+        <div className="flex items-center gap-2.5 pl-1 pr-2 py-1 rounded-full bg-space-800/80 border border-space-300 hover:border-space-200 transition-all cursor-pointer">
+          <img
+            src={user.picture}
+            alt={user.name}
+            className="w-7 h-7 rounded-full object-cover border border-brand-500/20"
+            referrerPolicy="no-referrer"
+          />
+          <div className="hidden sm:flex flex-col text-left leading-none">
+            <span className="text-2xs font-bold text-slate-300 truncate max-w-[100px]">
+              {user.name}
+            </span>
+            <span className="text-3xs text-slate-600 truncate max-w-[120px] mt-0.5">
+              {user.email}
+            </span>
+          </div>
+          <ChevronDown size={11} className="text-slate-500" />
+        </div>
       </div>
     </header>
   )

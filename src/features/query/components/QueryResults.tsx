@@ -9,7 +9,7 @@ import { cn } from '@/utils/cn'
 
 // ─── Empty State ───────────────────────────────────────────────────────────
 
-const EmptyQueryState = memo(() => (
+const EmptyQueryState = memo(({ onSelectSuggestion }: { onSelectSuggestion: (s: string) => void }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.96 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -22,20 +22,20 @@ const EmptyQueryState = memo(() => (
     >
       ✦
     </motion.div>
-    <h2 className="font-display text-lg font-semibold text-slate-400 mb-2">
+    <h2 className="font-display text-lg font-semibold text-slate-200 mb-2">
       Ask your storage anything
     </h2>
-    <p className="text-sm text-slate-700 max-w-sm leading-relaxed mb-6">
+    <p className="text-sm text-slate-450 max-w-sm leading-relaxed mb-6">
       Use natural language to find, analyse, and manage your files. Powered by RAG + Claude.
     </p>
-    <div className="flex flex-col gap-2 text-xs text-slate-800">
+    <div className="flex flex-col gap-2 text-xs text-slate-400">
       {[
-        '"Find all invoices above ₹10,000 from Q1"',
-        '"Show resumes with Python and Kubernetes skills"',
-        '"Summarise our Q4 sales performance"',
-        '"Which contracts expire in 2027?"',
+        'Find invoices above ₹10,000',
+        'Python developer resumes',
+        '3-year contracts',
+        'Contracts expiring in 2027',
       ].map((example) => (
-        <p key={example} className="font-mono">{example}</p>
+        <p key={example} className="font-mono text-slate-550 hover:text-slate-200 transition-colors cursor-pointer" onClick={() => onSelectSuggestion(example)}>"{example}"</p>
       ))}
     </div>
   </motion.div>
@@ -119,7 +119,7 @@ MatchCountHeader.displayName = 'MatchCountHeader'
 // ─── QueryResults Component ────────────────────────────────────────────────
 
 export const QueryResults = memo(() => {
-  const { query, isLoading, result, error, pipelineStep, executeQuery, clearError } =
+  const { query, isLoading, result, error, pipelineStep, executeQuery, clearError, handleSuggestion } =
     useAIQuery()
 
   const handleRetry = () => {
@@ -178,7 +178,7 @@ export const QueryResults = memo(() => {
         {/* ── Default Empty State ── */}
         {!result && !isLoading && !error && (
           <motion.div key="empty" className="h-full" layout>
-            <EmptyQueryState />
+            <EmptyQueryState onSelectSuggestion={handleSuggestion} />
           </motion.div>
         )}
 

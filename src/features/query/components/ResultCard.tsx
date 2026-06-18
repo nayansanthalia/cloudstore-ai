@@ -94,13 +94,15 @@ export const ResultCard = memo(({ match, index }: ResultCardProps) => {
       }}
       className={cn(
         'rounded-xl border overflow-hidden',
-        'transition-all duration-200',
-        'hover:border-space-200',
-        isHigh ? 'border-space-300' : 'border-space-300/60',
+        'transition-all duration-250 ease-out',
+        'hover:border-space-200 hover:shadow-card-hover',
+        isHigh ? 'border-space-300' : 'border-space-300/50',
       )}
       style={{
-        background: 'rgba(8, 22, 41, 1)',
-        borderLeft: isHigh ? `3px solid ${folderColor}` : '3px solid rgba(18,32,53,1)',
+        background: 'rgba(8, 22, 41, 0.45)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderLeft: isHigh ? `3px solid ${folderColor}` : '3px solid rgba(18,32,53,0.3)',
       }}
     >
       {/* Card Header */}
@@ -205,7 +207,7 @@ export const AnswerCard = memo(({ answer, insight, matchCount }: AnswerCardProps
     transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
     className={cn(
       'rounded-xl border border-space-200 overflow-hidden mb-4',
-      'bg-gradient-to-br from-space-600 to-space-700',
+      'bg-gradient-to-br from-brand-950/40 to-space-900/60 backdrop-blur-md',
     )}
     style={{ borderLeft: '3px solid #2563EB' }}
   >
