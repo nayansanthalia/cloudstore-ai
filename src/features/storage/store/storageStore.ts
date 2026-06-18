@@ -1,14 +1,24 @@
 import { create } from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
+import axios from 'axios'
 
 import { MOCK_FILES } from '@/features/storage/data/mockFiles'
 import type { CloudFile, FilterConfig, FolderName, SortConfig, SortField } from '@/types'
+
+const API_BASE_URL = 'http://localhost:5000/api'
+
+// Configure axios to send cookies with requests
+axios.defaults.withCredentials = true
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
 interface StorageState {
   // Data
   files: CloudFile[]
+  isConnected: boolean
+  isSyncing: boolean
+  userProfile: { name: string; email: string; picture: string } | null
+  error: string | null
 
   // Filter & Sort
   filters: FilterConfig
@@ -23,7 +33,13 @@ interface StorageState {
   setSortField: (field: SortField) => void
   toggleSortDirection: () => void
   resetFilters: () => void
-  toggleStarred: (id: number) => void
+  toggleStarred: (id: number) => Promise<void>
+  
+  // Google Drive & API Actions
+  checkAuthStatus: () => Promise<boolean>
+  syncFiles: () => Promise<void>
+  disconnectDrive: () => Promise<void>
+  fetchFiles: () => Promise<void>
 }
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
@@ -43,7 +59,7 @@ function applyFiltersAndSort(files: CloudFile[], filters: FilterConfig, sort: So
       (f) =>
         f.name.toLowerCase().includes(term) ||
         f.tags.some((t) => t.includes(term)) ||
-        f.content.toLowerCase().includes(term),
+        (f.content && f.content.toLowerCase().includes(term)),
     )
   }
 
@@ -93,8 +109,12 @@ const DEFAULT_SORT: SortConfig = {
 export const useStorageStore = create<StorageState>()(
   devtools(
     subscribeWithSelector((set, get) => ({
-      // Initial data
+      // Initial data - start with MOCK_FILES as a fallback/preview
       files: MOCK_FILES,
+      isConnected: false,
+      isSyncing: false,
+      userProfile: null,
+      error: null,
       filters: DEFAULT_FILTERS,
       sort: DEFAULT_SORT,
       filteredFiles: applyFiltersAndSort(MOCK_FILES, DEFAULT_FILTERS, DEFAULT_SORT),
@@ -153,7 +173,19 @@ export const useStorageStore = create<StorageState>()(
         })
       },
 
-      toggleStarred: (id) => {
+      toggleStarred: async (id) => {
+        const { isConnected } = get()
+        
+        // If connected, syncstarred state with backend
+        if (isConnected) {
+          try {
+            await axios.post(`${API_BASE_URL}/drive/files/${id}/star`)
+          } catch (err) {
+            console.error('Failed to update star state on server', err)
+          }
+        }
+
+        // Always update local UI state
         set((state) => {
           const files = state.files.map((f) =>
             f.id === id ? { ...f, starred: !f.starred } : f,
@@ -164,6 +196,84 @@ export const useStorageStore = create<StorageState>()(
           }
         })
       },
+
+      // ── Google Drive & API Actions ──────────────────────────────────────────
+
+      checkAuthStatus: async () => {
+        try {
+          const response = await axios.get(`${API_BASE_URL}/auth/status`)
+          if (response.data.connected) {
+            set({
+              isConnected: true,
+              userProfile: response.data.user,
+              error: null
+            })
+            // Fetch real synced files
+            await get().fetchFiles()
+            return true
+          } else {
+            set({
+              isConnected: false,
+              userProfile: null,
+              files: MOCK_FILES, // Fallback to mock files if disconnected
+              filteredFiles: applyFiltersAndSort(MOCK_FILES, get().filters, get().sort)
+            })
+            return false
+          }
+        } catch (err) {
+          console.error('Failed to check OAuth status', err)
+          set({ isConnected: false, userProfile: null })
+          return false
+        }
+      },
+
+      fetchFiles: async () => {
+        try {
+          const response = await axios.get(`${API_BASE_URL}/drive/files`)
+          const fetchedFiles = response.data
+          
+          set({
+            files: fetchedFiles,
+            filteredFiles: applyFiltersAndSort(fetchedFiles, get().filters, get().sort),
+            error: null
+          })
+        } catch (err) {
+          console.error('Failed to fetch files from server', err)
+          set({ error: 'Failed to fetch indexed files.' })
+        }
+      },
+
+      syncFiles: async () => {
+        const { isSyncing, isConnected } = get()
+        if (isSyncing || !isConnected) return
+
+        set({ isSyncing: true, error: null })
+        try {
+          await axios.post(`${API_BASE_URL}/drive/sync`)
+          await get().fetchFiles() // Reload files list after sync completes
+        } catch (err: any) {
+          console.error('Sync failed', err)
+          set({ error: err.response?.data?.error || 'Synchronization failed.' })
+        } finally {
+          set({ isSyncing: false })
+        }
+      },
+
+      disconnectDrive: async () => {
+        try {
+          await axios.post(`${API_BASE_URL}/auth/logout`)
+        } catch (err) {
+          console.error('Failed to logout of Google Drive', err)
+        } finally {
+          set({
+            isConnected: false,
+            userProfile: null,
+            files: MOCK_FILES, // Reset back to mock preview
+            filteredFiles: applyFiltersAndSort(MOCK_FILES, get().filters, get().sort),
+            error: null
+          })
+        }
+      }
     })),
     { name: 'cloudstore-storage' },
   ),

@@ -3,7 +3,7 @@ import { Activity, Database, Files, HardDrive } from 'lucide-react'
 import { memo } from 'react'
 
 import { APP_NAME, APP_TAGLINE } from '@/constants'
-import { STORAGE_STATS } from '@/features/storage/data/mockFiles'
+import { useStorageStore } from '@/features/storage/store/storageStore'
 import { cn } from '@/utils/cn'
 
 // ─── Stat Pill ─────────────────────────────────────────────────────────────
@@ -46,20 +46,37 @@ StatusDot.displayName = 'StatusDot'
 // ─── Header Component ──────────────────────────────────────────────────────
 
 export const Header = memo(() => {
+  const { files } = useStorageStore()
+
+  // Calculate dynamic stats from real files
+  const totalFiles = files.length
+  const uniqueFolders = new Set(files.map((f) => f.folder))
+  const totalFolders = uniqueFolders.size
+
+  const totalSizeBytes = files.reduce((acc, f) => acc + (f.sizeBytes || 0), 0)
+  const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return '0 KB'
+    const k = 1024
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
+  }
+  const totalSizeLabel = formatBytes(totalSizeBytes)
+
   const stats = [
     {
       icon: <Files size={14} />,
-      value: String(STORAGE_STATS.totalFiles),
+      value: String(totalFiles),
       label: 'Files',
     },
     {
       icon: <Database size={14} />,
-      value: String(STORAGE_STATS.totalFolders),
+      value: String(totalFolders),
       label: 'Folders',
     },
     {
       icon: <HardDrive size={14} />,
-      value: STORAGE_STATS.totalSizeLabel,
+      value: totalSizeLabel,
       label: 'Indexed',
     },
     {

@@ -1,25 +1,16 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import { z } from 'zod'
 
 import {
-  ANTHROPIC_SYSTEM_PROMPT,
   ERROR_MESSAGES,
   MAX_RESULTS,
 } from '@/constants'
+
 import type {
   AppError,
   CloudFile,
   ErrorCode,
   QueryResult,
 } from '@/types'
-
-const genAI = new GoogleGenerativeAI(
-  import.meta.env.VITE_GEMINI_API_KEY,
-)
-
-const model = genAI.getGenerativeModel({
-  model: 'gemini-2.5-flash',
-})
 
 const FileMatchSchema = z.object({
   id: z.number().int().positive(),
@@ -48,47 +39,6 @@ function createAppError(
   }
 }
 
-function buildFileContext(files: CloudFile[]): string {
-  return files
-    .map(
-      (f) =>
-        `[ID:${f.id}] ${f.name}
-Folder: ${f.folder}
-Type: ${f.type}
-Size: ${f.size}
-Date: ${f.date}
-Content: ${f.content}`,
-    )
-    .join('\n\n')
-}
-
-function parseGeminiResponse(raw: string): QueryResult {
-  const cleaned = raw
-    .replace(/```json/g, '')
-    .replace(/```/g, '')
-    .trim()
-
-  const start = cleaned.indexOf('{')
-  const end = cleaned.lastIndexOf('}')
-
-  if (start === -1 || end === -1) {
-    throw new Error('No JSON found')
-  }
-
-  const jsonString = cleaned.slice(start, end + 1)
-
-  const parsed = JSON.parse(jsonString)
-
-  const validated =
-    QueryResultSchema.parse(parsed)
-
-  return {
-    answer: validated.answer,
-    matches: validated.matches,
-    insight: validated.insight ?? null,
-  }
-}
-
 export interface QueryFilesParams {
   query: string
   files: CloudFile[]
@@ -103,7 +53,7 @@ export interface QueryFilesResult {
 export async function queryFiles(
   params: QueryFilesParams,
 ): Promise<QueryFilesResult> {
-  const { query, files } = params
+  const { query } = params
 
   if (!query.trim()) {
     return {
@@ -116,33 +66,33 @@ export async function queryFiles(
   }
 
   try {
-    const fileContext =
-      buildFileContext(files)
+    const response = await fetch(
+      'http://localhost:5000/api/query',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          query,
+        }),
+      },
+    )
 
-    const prompt = `
-${ANTHROPIC_SYSTEM_PROMPT}
+    if (!response.ok) {
+      throw new Error(
+        `Backend returned ${response.status}`,
+      )
+    }
 
-Storage files:
+    const result = await response.json()
 
-${fileContext}
-
-User Query:
-"${query}"
-
-Return ONLY JSON.
-`
-
-    const response =
-      await model.generateContent(prompt)
-
-    const rawText =
-      response.response.text()
-
-    const result =
-      parseGeminiResponse(rawText)
+    const validated =
+      QueryResultSchema.parse(result)
 
     return {
-      data: result,
+      data: validated,
       error: null,
     }
   } catch (err) {
@@ -152,16 +102,6 @@ Return ONLY JSON.
         error: createAppError(
           'PARSE_ERROR',
           err.message,
-        ),
-      }
-    }
-
-    if (err instanceof SyntaxError) {
-      return {
-        data: null,
-        error: createAppError(
-          'PARSE_ERROR',
-          'Invalid JSON response',
         ),
       }
     }

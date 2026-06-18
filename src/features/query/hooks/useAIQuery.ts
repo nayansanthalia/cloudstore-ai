@@ -1,9 +1,10 @@
 import { useCallback, useRef } from 'react'
+import axios from 'axios'
 
 import { PIPELINE_STEP_DELAY_MS } from '@/constants'
-import { queryFiles } from '@/features/query/services/anthropicService'
 import { useQueryStore } from '@/features/query/store/queryStore'
-import { useStorageStore } from '@/features/storage/store/storageStore'
+
+const API_BASE_URL = 'http://localhost:5000/api'
 
 // ─── Hook ──────────────────────────────────────────────────────────────────
 
@@ -12,8 +13,6 @@ export function useAIQuery() {
 
   const { query, isLoading, result, error, pipelineStep, setQuery, setLoading, setPipelineStep, setResult, setError, clearResult, clearError, reset } =
     useQueryStore()
-
-  const { files } = useStorageStore()
 
   /**
    * Animate the RAG pipeline steps sequentially
@@ -42,23 +41,41 @@ export function useAIQuery() {
       setLoading(true)
       setPipelineStep(0)
 
-      // Start pipeline animation and API call concurrently
-      const [, queryResult] = await Promise.all([
-        animatePipeline(),
-        queryFiles({
-          query: trimmed,
-          files,
-          abortSignal: abortControllerRef.current.signal,
-        }),
-      ])
+      try {
+        // Start pipeline animation and API call concurrently
+        const [, apiResponse] = await Promise.all([
+          animatePipeline(),
+          axios.post(
+            `${API_BASE_URL}/query`,
+            { query: trimmed },
+            {
+              signal: abortControllerRef.current.signal,
+              withCredentials: true
+            }
+          ).catch((err) => {
+            // Throw error to be caught in try-catch block
+            throw err
+          })
+        ])
 
-      if (queryResult.error) {
-        setError(queryResult.error)
-      } else if (queryResult.data) {
-        setResult(queryResult.data, trimmed)
+        if (apiResponse && apiResponse.data) {
+          setResult(apiResponse.data, trimmed)
+        }
+      } catch (err: any) {
+        if (axios.isCancel(err)) {
+          // Query was aborted, ignore
+          return
+        }
+
+        console.error('RAG query failed', err)
+        setError({
+          code: 'API_ERROR',
+          message: err.response?.data?.error || 'The AI service returned an error. Please try again.',
+          timestamp: new Date()
+        })
       }
     },
-    [isLoading, files, animatePipeline, clearResult, clearError, setLoading, setPipelineStep, setResult, setError],
+    [isLoading, animatePipeline, clearResult, clearError, setLoading, setPipelineStep, setResult, setError],
   )
 
   /**

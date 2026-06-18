@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Clock, RotateCcw, Trash2 } from 'lucide-react'
-import { memo, useCallback } from 'react'
+import { Clock, RotateCcw, Trash2, LogOut, Cloud, RefreshCw } from 'lucide-react'
+import { memo, useCallback, useEffect } from 'react'
 
 import { FOLDER_META } from '@/constants'
 import { useQueryStore } from '@/features/query/store/queryStore'
@@ -105,9 +105,23 @@ SectionLabel.displayName = 'SectionLabel'
 // ─── Sidebar Component ─────────────────────────────────────────────────────
 
 export const Sidebar = memo(() => {
-  const { filters, setFolder } = useStorageStore()
+  const {
+    filters,
+    setFolder,
+    isConnected,
+    isSyncing,
+    userProfile,
+    syncFiles,
+    disconnectDrive,
+    checkAuthStatus,
+  } = useStorageStore()
   const folderCounts = useStorageStore(selectFolderCounts)
   const { history, replayHistoryItem, clearHistory } = useQueryStore()
+
+  // Trigger auth status check on sidebar mount
+  useEffect(() => {
+    void checkAuthStatus()
+  }, [checkAuthStatus])
 
   const handleFolderClick = useCallback(
     (folder: FolderName | 'All') => {
@@ -116,12 +130,17 @@ export const Sidebar = memo(() => {
     [setFolder],
   )
 
+  const handleConnect = () => {
+    // Redirect window to backend OAuth login endpoint
+    window.location.href = 'http://localhost:5000/api/auth/google'
+  }
+
   const folders = Object.keys(FOLDER_META)
 
   return (
     <aside
       className={cn(
-        'flex flex-col shrink-0 py-3 gap-0.5 overflow-y-auto overflow-x-hidden',
+        'flex flex-col shrink-0 py-3 gap-0.5 h-full overflow-y-auto overflow-x-hidden',
         'border-r border-space-300 bg-space-800',
       )}
       style={{ width: 'var(--sidebar-w)' }}
@@ -184,6 +203,76 @@ export const Sidebar = memo(() => {
             ))
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Spacer to push connection card to bottom */}
+      <div className="flex-1 min-h-[20px]" />
+
+      {/* Google Drive Status Section */}
+      <div className="mx-2 mt-auto border-t border-space-300 pt-3 px-1.5 pb-2">
+        {isConnected ? (
+          <div className="rounded-lg bg-space-900/50 border border-space-300 p-2.5 flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              {userProfile?.picture ? (
+                <img
+                  src={userProfile.picture}
+                  alt={userProfile.name}
+                  className="w-6 h-6 rounded-full border border-brand-500/20"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-brand-950 flex items-center justify-center text-brand-400 font-bold text-3xs">
+                  {userProfile?.name?.charAt(0) || 'U'}
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="text-2xs font-semibold text-slate-300 truncate leading-none">
+                  {userProfile?.name}
+                </p>
+                <p className="text-3xs text-slate-700 truncate leading-none mt-1">
+                  {userProfile?.email}
+                </p>
+              </div>
+              <button
+                onClick={() => void disconnectDrive()}
+                title="Disconnect Google Drive"
+                className="text-slate-800 hover:text-rose-500 transition-colors p-1 hover:bg-space-600 rounded"
+              >
+                <LogOut size={12} />
+              </button>
+            </div>
+
+            <button
+              onClick={() => void syncFiles()}
+              disabled={isSyncing}
+              className={cn(
+                'w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded text-2xs font-bold transition-all duration-200',
+                isSyncing
+                  ? 'bg-space-600 text-slate-500 cursor-not-allowed'
+                  : 'bg-brand-950 text-brand-400 border border-brand-900 hover:bg-brand-900 hover:text-white',
+              )}
+            >
+              <RefreshCw size={10} className={cn(isSyncing && 'animate-spin')} />
+              {isSyncing ? 'Syncing...' : 'Sync Drive'}
+            </button>
+          </div>
+        ) : (
+          <div className="rounded-lg bg-space-950/60 border border-dashed border-space-300 p-3 text-center flex flex-col gap-2">
+            <div className="flex items-center justify-center gap-1.5 text-slate-700">
+              <Cloud size={14} />
+              <span className="text-2xs font-semibold uppercase tracking-wider">Storage Status</span>
+            </div>
+            <p className="text-3xs text-slate-800 leading-normal">
+              Showing preview documents. Link your Google Drive to index real files.
+            </p>
+            <button
+              onClick={handleConnect}
+              className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded bg-gradient-to-r from-brand-600 to-accent-600 hover:from-brand-500 hover:to-accent-500 text-2xs font-bold text-white shadow-glow-sm hover:shadow-glow transition-all duration-200"
+            >
+              Connect Drive
+            </button>
+          </div>
+        )}
       </div>
     </aside>
   )
