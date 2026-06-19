@@ -48,17 +48,17 @@ export const StorageDistributionChart = memo(() => {
   const data = getData()
 
   return (
-    <div className="glass-card rounded-2xl p-4.5 flex flex-col justify-between flex-1 min-h-[300px]">
+    <div className="glass-card rounded-2xl p-4.5 flex flex-col justify-between flex-1 min-h-[300px] border border-white/50 shadow-sm text-brandNavy">
       {/* Header & Dropdown */}
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="text-sm font-display font-semibold text-slate-200">Storage Distribution</h3>
-          <p className="text-3xs text-slate-500 mt-0.5">Tracking index size vs. document counts across categories</p>
+          <h3 className="text-sm font-display font-bold text-brandNavy">Storage Distribution</h3>
+          <p className="text-3xs text-brandNavy/65 mt-0.5 font-semibold">Tracking index size vs. document counts across categories</p>
         </div>
         <select 
           value={timeframe}
           onChange={(e) => setTimeframe(e.target.value as any)}
-          className="text-3xs bg-space-600 border border-space-300 rounded px-1.5 py-0.5 text-slate-400 outline-none hover:border-space-200 cursor-pointer"
+          className="text-3xs bg-white border border-slate-200 rounded px-2.5 py-1 text-brandNavy font-semibold outline-none hover:border-brandNavy/25 cursor-pointer shadow-sm"
         >
           <option value="Weekly">Weekly</option>
           <option value="Monthly">Monthly</option>
@@ -67,14 +67,14 @@ export const StorageDistributionChart = memo(() => {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-4 text-3xs font-semibold mb-4">
+      <div className="flex items-center gap-4 text-3xs font-bold mb-4">
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-400" />
-          <span className="text-slate-400">File Count Share</span>
+          <span className="w-2 h-2 rounded-full bg-brandEmerald" />
+          <span className="text-brandNavy/60">File Count Share</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-rose-400" />
-          <span className="text-slate-400">Index Size Share</span>
+          <span className="w-2 h-2 rounded-full bg-[#F79256]" />
+          <span className="text-brandNavy/60">Index Size Share</span>
         </div>
       </div>
 
@@ -84,8 +84,8 @@ export const StorageDistributionChart = memo(() => {
         <div className="absolute inset-y-0 inset-x-0 flex justify-between pointer-events-none">
           {[0, 20, 40, 60, 80, 100].map((val) => (
             <div key={val} className="flex flex-col items-center h-full relative">
-              <div className="w-px h-[90%] border-l border-dashed border-space-300/30" />
-              <span className="text-[9px] text-slate-700 font-mono mt-1 absolute bottom-0">{val}</span>
+              <div className="w-px h-[90%] border-l border-dashed border-brandNavy/10" />
+              <span className="text-[9px] text-brandNavy/40 font-mono font-bold mt-1 absolute bottom-0">{val}</span>
             </div>
           ))}
         </div>
@@ -100,29 +100,29 @@ export const StorageDistributionChart = memo(() => {
               onMouseLeave={() => setHoveredIdx(null)}
             >
               {/* Folder Label */}
-              <span className="text-2xs font-semibold text-slate-400 w-14 truncate" style={{ color: item.color }}>
+              <span className="text-2xs font-bold w-14 truncate" style={{ color: item.color }}>
                 {item.folder}
               </span>
 
               {/* Stacked Progress Bars */}
               <div className="flex-1 flex flex-col gap-1.5 relative py-1">
                 {/* File Count Share Bar */}
-                <div className="h-2 w-full bg-space-900/40 rounded-full overflow-hidden">
+                <div className="h-2 w-full bg-slate-150 border border-slate-200/50 rounded-full overflow-hidden shadow-inner">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${item.countPercent}%` }}
                     transition={{ duration: 0.8, ease: 'easeOut', delay: idx * 0.08 }}
-                    className="h-full bg-gradient-to-r from-emerald-500/80 to-emerald-400 rounded-full"
+                    className="h-full bg-gradient-to-r from-brandEmerald/80 to-brandEmerald rounded-full"
                   />
                 </div>
 
                 {/* Index Size Share Bar */}
-                <div className="h-2 w-full bg-space-900/40 rounded-full overflow-hidden">
+                <div className="h-2 w-full bg-slate-150 border border-slate-200/50 rounded-full overflow-hidden shadow-inner">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${item.sizePercent}%` }}
                     transition={{ duration: 0.8, ease: 'easeOut', delay: idx * 0.08 + 0.05 }}
-                    className="h-full bg-gradient-to-r from-rose-500/80 to-rose-400 rounded-full"
+                    className="h-full bg-gradient-to-r from-[#F79256]/85 to-[#F79256] rounded-full"
                   />
                 </div>
               </div>
@@ -132,11 +132,11 @@ export const StorageDistributionChart = memo(() => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  className="absolute z-20 left-[60%] top-[-25px] transform -translate-x-1/2 bg-slate-950/95 border border-space-200 px-2.5 py-1 rounded-lg shadow-xl flex items-center gap-2 text-[10px] font-bold font-mono"
+                  className="absolute z-20 left-[60%] top-[-25px] transform -translate-x-1/2 bg-white border border-brandNavy/15 px-2.5 py-1 rounded-lg shadow-lg flex items-center gap-2 text-[10px] font-bold font-mono text-brandNavy"
                 >
-                  <span className="text-emerald-400">{item.count} docs ({item.countPercent}%)</span>
-                  <span className="text-slate-600">|</span>
-                  <span className="text-rose-400">{item.size} ({item.sizePercent}%)</span>
+                  <span className="text-brandEmerald">{item.count} docs ({item.countPercent}%)</span>
+                  <span className="text-brandNavy/20">|</span>
+                  <span className="text-[#F79256]">{item.size} ({item.sizePercent}%)</span>
                 </motion.div>
               )}
             </div>

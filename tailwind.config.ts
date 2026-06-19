@@ -10,18 +10,24 @@ const config: Config = {
     extend: {
       /* ── Brand Color System ─────────────────────────────────────── */
       colors: {
+        brandNavy: '#1F3753',
+        brandSky: '#83E9FF',
+        brandCoral: '#F79256',
+        brandEmerald: '#0EC073',
+
         // Deep space background palette
         space: {
-          950: '#010509',
-          900: '#030B18',
-          800: '#040D1C',
-          700: '#050F20',
-          600: '#081629',
-          500: '#0D1D35',
-          400: '#122035',
-          300: '#1A2A44',
-          200: '#1E3A5F',
-          100: '#2A4A6F',
+          950: '#F0F9FF', // Toned for light glassmorphism
+          900: '#E0F2FE',
+          800: '#BAE6FD',
+          705: '#7DD3FC',
+          700: '#7DD3FC',
+          600: '#38BDF8',
+          500: '#0EA5E9',
+          400: '#0284C7',
+          300: '#0369A1',
+          200: '#075985',
+          100: '#0C4A6E',
         },
 
         // Primary electric blue
@@ -86,8 +92,8 @@ const config: Config = {
 
       /* ── Typography ─────────────────────────────────────────────── */
       fontFamily: {
-        sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-        display: ['"Space Grotesk"', '"Inter"', 'sans-serif'],
+        sans: ['"Helvetica Neue"', 'Helvetica', '"Inter"', '-apple-system', 'sans-serif'],
+        display: ['"Helvetica Neue"', 'Helvetica', '"Space Grotesk"', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"Fira Code"', 'Consolas', 'monospace'],
       },
 

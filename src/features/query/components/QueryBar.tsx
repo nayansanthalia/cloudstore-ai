@@ -23,11 +23,11 @@ const SuggestionChip = memo(({ label, onClick, index }: SuggestionChipProps) => 
     whileTap={{ scale: 0.97 }}
     onClick={onClick}
     className={cn(
-      'px-3 py-1 rounded-full text-2xs font-medium',
-      'border border-space-300 text-slate-400',
-      'hover:border-brand-600/50 hover:text-slate-200 hover:bg-brand-950/40',
+      'px-3 py-1 rounded-full text-2xs font-bold shadow-2xs',
+      'border border-white/80 text-brandNavy/65 bg-white/40',
+      'hover:border-brandNavy/35 hover:text-brandNavy hover:bg-white',
       'transition-all duration-150 whitespace-nowrap',
-      'focus-visible:outline-brand-500',
+      'focus-visible:outline-brandNavy',
     )}
   >
     {label}
@@ -91,35 +91,34 @@ export const QueryBar = memo(() => {
     <div
       className={cn(
         'px-5 pt-4 pb-3 shrink-0',
-        'border-b border-space-300 bg-space-900/30 backdrop-blur-md',
+        'border-b border-white/50 bg-white/45 backdrop-blur-md',
       )}
     >
       {/* Search Input */}
       <motion.div
         animate={{
           borderColor: isLoading
-            ? 'rgba(16, 185, 129, 0.7)'
+            ? 'rgba(14, 192, 115, 0.7)'
             : isFocused
-              ? 'rgba(37, 99, 235, 0.6)'
-              : 'rgba(255, 255, 255, 0.15)',
+              ? 'rgba(31, 55, 83, 0.4)'
+              : 'rgba(255, 255, 255, 0.7)',
           boxShadow: isLoading
-            ? '0 0 16px rgba(16, 185, 129, 0.2)'
+            ? '0 0 16px rgba(14, 192, 115, 0.15)'
             : isFocused
-              ? '0 0 16px rgba(37, 99, 235, 0.15)'
+              ? '0 0 16px rgba(31, 55, 83, 0.05)'
               : '0 0 0px transparent',
         }}
         transition={{ duration: 0.2 }}
         className={cn(
-          'flex items-center gap-3 px-4 rounded-xl',
-          'bg-space-800/80 border',
+          'flex items-center gap-3 px-4 rounded-xl shadow-inner bg-white/50 border border-white/70',
           'transition-all duration-200',
         )}
         style={{ height: 48 }}
       >
         {/* Icon */}
-        <div className="shrink-0 text-brand-500">
+        <div className="shrink-0 text-brandNavy/60">
           {isLoading ? (
-            <Loader2 size={16} className="animate-spin" />
+            <Loader2 size={16} className="animate-spin text-brandEmerald" />
           ) : (
             <Search size={16} />
           )}
@@ -138,7 +137,7 @@ export const QueryBar = memo(() => {
           maxLength={MAX_QUERY_LENGTH}
           disabled={isLoading}
           className={cn(
-            'flex-1 bg-transparent text-sm text-slate-200 placeholder-slate-500',
+            'flex-1 bg-transparent text-sm text-brandNavy font-semibold placeholder-brandNavy/40',
             'outline-none border-none',
             'disabled:opacity-60',
           )}
@@ -156,7 +155,7 @@ export const QueryBar = memo(() => {
               exit={{ opacity: 0 }}
               className={cn(
                 'text-2xs font-mono shrink-0',
-                query.length >= MAX_QUERY_LENGTH ? 'text-rose-500' : 'text-slate-700',
+                query.length >= MAX_QUERY_LENGTH ? 'text-rose-500 font-bold' : 'text-brandNavy/40',
               )}
             >
               {query.length}/{MAX_QUERY_LENGTH}
@@ -174,7 +173,7 @@ export const QueryBar = memo(() => {
               onClick={handleClear}
               className={cn(
                 'shrink-0 w-5 h-5 rounded-full flex items-center justify-center',
-                'text-slate-700 hover:text-slate-400 hover:bg-space-400',
+                'text-brandNavy/40 hover:text-brandNavy hover:bg-slate-100',
                 'transition-all duration-150',
               )}
             >
@@ -185,14 +184,14 @@ export const QueryBar = memo(() => {
 
         {/* Keyboard hint (desktop only) */}
         {!isLoading && query.length === 0 && (
-          <div className="hidden md:flex items-center gap-0.5 shrink-0 text-slate-800">
+          <div className="hidden md:flex items-center gap-0.5 shrink-0 text-brandNavy/30 font-semibold">
             <Command size={10} />
             <span className="text-2xs">K</span>
           </div>
         )}
 
         {/* Divider */}
-        <div className="h-5 w-px bg-space-300 shrink-0" />
+        <div className="h-5 w-px bg-brandNavy/10 shrink-0" />
 
         {/* Submit / Cancel Button */}
         <motion.button
@@ -201,13 +200,13 @@ export const QueryBar = memo(() => {
           onClick={isLoading ? cancelQuery : handleSubmit}
           disabled={!canSubmit && !isLoading}
           className={cn(
-            'shrink-0 h-9 px-4 rounded-lg text-xs font-semibold',
+            'shrink-0 h-9 px-4 rounded-lg text-xs font-bold border',
             'transition-all duration-200',
             isLoading
-              ? 'bg-rose-600/20 text-rose-400 border border-rose-600/30 hover:bg-rose-600/30'
+              ? 'bg-rose-600/20 text-rose-600 border-rose-600/30 hover:bg-rose-600/30'
               : canSubmit
-                ? 'bg-gradient-to-r from-brand-600 to-accent-600 text-white shadow-glow-sm'
-                : 'bg-space-500 text-slate-700 cursor-not-allowed',
+                ? 'bg-brandNavy border-brandNavy text-white hover:bg-brandNavy/95 shadow-sm'
+                : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed',
           )}
         >
           {isLoading ? 'Cancel' : 'Ask AI →'}
@@ -216,7 +215,7 @@ export const QueryBar = memo(() => {
 
       {/* Suggestion Chips */}
       <div className="flex items-center gap-2 mt-3 overflow-x-auto pb-0.5 no-scrollbar">
-        <span className="text-2xs text-slate-450 shrink-0">Try:</span>
+        <span className="text-2xs text-brandNavy/50 font-bold shrink-0">Try:</span>
         {SUGGESTED_QUERIES.slice(0, 6).map((s, i) => (
           <SuggestionChip
             key={s}

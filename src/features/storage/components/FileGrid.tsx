@@ -41,7 +41,7 @@ const Toolbar = memo(({
   ]
 
   return (
-    <div className="flex items-center gap-3 px-5 py-2.5 border-b border-space-300 shrink-0 bg-space-900/35 backdrop-blur-md">
+    <div className="flex items-center gap-3 px-5 py-2.5 border-b border-white/50 shrink-0 bg-white/45 backdrop-blur-md">
       {/* Folder info */}
       <div className="flex items-center gap-2">
         <span
@@ -50,8 +50,8 @@ const Toolbar = memo(({
         >
           {meta?.icon ?? <FolderOpen size={14} />}
         </span>
-        <span className="text-xs font-semibold text-slate-400">{folderName}</span>
-        <span className="text-2xs text-slate-700">
+        <span className="text-xs font-bold text-brandNavy">{folderName}</span>
+        <span className="text-2xs text-brandNavy/50 font-bold">
           · {fileCount} file{fileCount !== 1 ? 's' : ''}
         </span>
       </div>
@@ -65,10 +65,10 @@ const Toolbar = memo(({
             key={opt.value}
             onClick={() => onSortChange(opt.value)}
             className={cn(
-              'px-2 py-1 rounded text-2xs font-medium transition-all duration-150',
+              'px-2 py-1 rounded text-2xs font-bold transition-all duration-150',
               sortField === opt.value
-                ? 'bg-brand-950 text-brand-400 border border-brand-900/50'
-                : 'text-slate-700 hover:text-slate-400',
+                ? 'bg-brandNavy text-white shadow-2xs border border-brandNavy/10'
+                : 'text-brandNavy/60 hover:text-brandNavy hover:bg-white/40',
             )}
           >
             {opt.label}
@@ -76,7 +76,7 @@ const Toolbar = memo(({
         ))}
         <button
           onClick={onToggleDirection}
-          className="ml-1 w-6 h-6 rounded flex items-center justify-center text-slate-700 hover:text-slate-400 hover:bg-space-500 transition-all duration-150"
+          className="ml-1 w-6 h-6 rounded flex items-center justify-center text-brandNavy/50 hover:text-brandNavy hover:bg-white/40 transition-all duration-150"
           title={`Sort ${sortDirection === 'asc' ? 'descending' : 'ascending'}`}
         >
           {sortDirection === 'asc' ? <SortAsc size={12} /> : <SortDesc size={12} />}
@@ -84,18 +84,18 @@ const Toolbar = memo(({
       </div>
 
       {/* Divider */}
-      <div className="h-4 w-px bg-space-300" />
+      <div className="h-4 w-px bg-brandNavy/10" />
 
       {/* View toggle */}
-      <div className="flex items-center gap-0.5 bg-space-600 rounded-md p-0.5 border border-space-300">
+      <div className="flex items-center gap-0.5 bg-white/60 rounded-md p-0.5 border border-white/80 shadow-2xs">
         <button
           onClick={() => onViewModeChange('grid')}
           className={cn(
             'w-6 h-6 rounded flex items-center justify-center',
             'transition-all duration-150',
             viewMode === 'grid'
-              ? 'bg-brand-950 text-brand-400'
-              : 'text-slate-700 hover:text-slate-400',
+              ? 'bg-brandNavy text-white shadow-3xs'
+              : 'text-brandNavy/50 hover:text-brandNavy hover:bg-white/40',
           )}
           title="Grid view"
         >
@@ -107,8 +107,8 @@ const Toolbar = memo(({
             'w-6 h-6 rounded flex items-center justify-center',
             'transition-all duration-150',
             viewMode === 'list'
-              ? 'bg-brand-950 text-brand-400'
-              : 'text-slate-700 hover:text-slate-400',
+              ? 'bg-brandNavy text-white shadow-3xs'
+              : 'text-brandNavy/50 hover:text-brandNavy hover:bg-white/40',
           )}
           title="List view"
         >
@@ -123,10 +123,10 @@ Toolbar.displayName = 'Toolbar'
 // ─── Empty Folder State ────────────────────────────────────────────────────
 
 const EmptyFolder = memo(({ folderName }: { folderName: string }) => (
-  <div className="flex flex-col items-center justify-center h-full py-20 text-center">
-    <FolderOpen size={36} className="text-slate-800 mb-3" />
-    <p className="text-sm font-medium text-slate-600 mb-1">No files in {folderName}</p>
-    <p className="text-xs text-slate-800">Upload files or switch to a different folder</p>
+  <div className="flex flex-col items-center justify-center h-full py-20 text-center text-brandNavy">
+    <FolderOpen size={36} className="text-brandNavy/40 mb-3" />
+    <p className="text-sm font-bold text-brandNavy/75 mb-1">No files in {folderName}</p>
+    <p className="text-xs text-brandNavy/50 font-semibold">Upload files or switch to a different folder</p>
   </div>
 ))
 EmptyFolder.displayName = 'EmptyFolder'
@@ -176,7 +176,7 @@ export const FileGrid = memo(() => {
         ) : (
           <motion.div layout className="flex flex-col gap-1.5">
             {/* List header */}
-            <div className="flex items-center gap-3 px-4 py-1.5 text-2xs text-slate-800 font-semibold uppercase tracking-wider">
+            <div className="flex items-center gap-3 px-4 py-1.5 text-2xs text-brandNavy/50 font-bold uppercase tracking-wider">
               <span className="w-5 shrink-0" />
               <span className="flex-1">Name</span>
               <span className="w-24 text-right shrink-0">Folder</span>

@@ -7,23 +7,23 @@
 /* ─── CSS Custom Properties ─────────────────────────────────────────────── */
 :root {
   /* Colors */
-  --color-bg:         #030B18;
-  --color-panel:      #040D1C;
-  --color-card:       #081629;
-  --color-border:     #122035;
-  --color-border-h:   #1E3A5F;
-  --color-blue:       #2563EB;
-  --color-purple:     #7C3AED;
-  --color-emerald:    #10B981;
-  --color-amber:      #F59E0B;
-  --color-rose:       #F43F5E;
-  --color-text:       #E2E8F0;
-  --color-muted:      #475569;
-  --color-dim:        #1E293B;
+  --color-bg:         #e0f2fe;
+  --color-panel:      rgba(255, 255, 255, 0.45);
+  --color-card:       rgba(255, 255, 255, 0.65);
+  --color-border:     rgba(31, 55, 83, 0.12);
+  --color-border-h:   rgba(31, 55, 83, 0.25);
+  --color-blue:       #1F3753;
+  --color-purple:     #83E9FF;
+  --color-emerald:    #0EC073;
+  --color-amber:      #F79256;
+  --color-rose:       #f43f5e;
+  --color-text:       #1F3753;
+  --color-muted:      #4A5D73;
+  --color-dim:        #E6F0FA;
 
   /* Typography */
-  --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-sans:    'Helvetica Neue', Helvetica, 'Inter', -apple-system, sans-serif;
+  --font-display: 'Helvetica Neue', Helvetica, 'Space Grotesk', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', Consolas, monospace;
 
   /* Spacing */
@@ -56,7 +56,7 @@ html {
 
 body {
   height: 100%;
-  background-color: #0b0f19;
+  background: radial-gradient(circle at top left, #e0f6ff 0%, #f1f9fc 35%, #ffffff 80%);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: 14px;
@@ -81,25 +81,25 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: rgba(31, 55, 83, 0.15);
   border-radius: 3px;
   transition: background var(--t-fast);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: rgba(31, 55, 83, 0.3);
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #1E293B transparent;
+  scrollbar-color: rgba(31, 55, 83, 0.15) transparent;
 }
 
 /* ─── Selection ──────────────────────────────────────────────────────────── */
 ::selection {
-  background: rgba(37, 99, 235, 0.3);
-  color: #E2E8F0;
+  background: rgba(131, 233, 255, 0.35);
+  color: #1F3753;
 }
 
 /* ─── Focus Visible ──────────────────────────────────────────────────────── */
@@ -115,32 +115,32 @@ body {
 
 /* ─── Glassmorphism ──────────────────────────────────────────────────────── */
 .glass {
-  background: rgba(8, 22, 41, 0.45);
+  background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .glass-strong {
-  background: rgba(4, 13, 28, 0.75);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .glass-card {
-  background: rgba(13, 27, 49, 0.3);
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 8px 32px rgba(31, 55, 83, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transition: all var(--t-base) var(--ease-spring);
 }
 
 .glass-card:hover {
-  background: rgba(18, 38, 68, 0.45);
-  border-color: rgba(37, 99, 235, 0.25);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(31, 55, 83, 0.22);
+  box-shadow: 0 12px 40px rgba(31, 55, 83, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 /* ─── Gradient Text ──────────────────────────────────────────────────────── */
@@ -177,10 +177,11 @@ body {
   z-index: 0;
 }
 
-/* ─── Grid Dot Pattern ───────────────────────────────────────────────────── */
+/* ─── Grid Line Pattern ───────────────────────────────────────────────────── */
 .grid-pattern {
-  background-image: radial-gradient(circle, rgba(37, 99, 235, 0.08) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-image: linear-gradient(rgba(31, 55, 83, 0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(31, 55, 83, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
 /* ─── Animated Gradient Border ───────────────────────────────────────────── */

@@ -39,9 +39,9 @@ const GridCard = memo(({ file, index, onQuery, onStar }: {
       }}
       whileHover={{ y: -2, transition: { duration: 0.2 } }}
       className={cn(
-        'group relative rounded-xl border border-space-300 p-3.5',
-        'bg-space-800/40 cursor-pointer backdrop-blur-sm',
-        'hover:border-space-200 hover:shadow-card-hover hover:bg-space-700/40',
+        'group relative rounded-xl border border-white/55 p-3.5',
+        'bg-white/45 cursor-pointer backdrop-blur-sm shadow-2xs',
+        'hover:border-brandNavy/20 hover:shadow-sm hover:bg-white/65',
         'transition-all duration-250 ease-out',
       )}
       onClick={onQuery}
@@ -54,8 +54,8 @@ const GridCard = memo(({ file, index, onQuery, onStar }: {
           'flex items-center justify-center',
           'opacity-0 group-hover:opacity-100',
           'transition-all duration-150',
-          'hover:bg-space-400',
-          file.starred ? 'opacity-100 text-amber-400' : 'text-slate-700',
+          'hover:bg-slate-100',
+          file.starred ? 'opacity-100 text-[#F79256]' : 'text-brandNavy/30',
         )}
       >
         <Star size={12} fill={file.starred ? 'currentColor' : 'none'} />
@@ -64,7 +64,7 @@ const GridCard = memo(({ file, index, onQuery, onStar }: {
       {/* Type icon + folder badge */}
       <div className="flex items-center gap-2 mb-3">
         <div
-          className="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0"
+          className="w-9 h-9 rounded-lg flex items-center justify-center text-xl shrink-0"
           style={{ background: `${color}15` }}
         >
           {icon}
@@ -82,28 +82,28 @@ const GridCard = memo(({ file, index, onQuery, onStar }: {
       </div>
 
       {/* File name */}
-      <p className="text-xs font-semibold text-slate-300 leading-snug mb-2 line-clamp-2">
+      <p className="text-xs font-bold text-brandNavy leading-snug mb-2 line-clamp-2 text-left">
         {file.name}
       </p>
 
       {/* Meta */}
       <div className="flex items-center justify-between mt-auto">
-        <span className="text-2xs text-slate-700 uppercase font-mono">
+        <span className="text-2xs text-brandNavy/40 uppercase font-mono font-bold">
           {file.type}
         </span>
-        <span className="text-2xs text-slate-700">{file.date}</span>
+        <span className="text-2xs text-brandNavy/40 font-bold">{file.date}</span>
       </div>
 
       {/* Hover overlay: "Click to query" */}
       <div
         className={cn(
           'absolute inset-0 rounded-xl flex items-center justify-center',
-          'bg-brand-950/80 opacity-0 group-hover:opacity-100',
+          'bg-brandNavy/95 opacity-0 group-hover:opacity-100',
           'transition-opacity duration-200',
-          'border border-brand-600/30',
+          'border border-brandNavy/10 shadow-sm',
         )}
       >
-        <span className="text-xs font-semibold text-brand-400 flex items-center gap-1.5">
+        <span className="text-xs font-bold text-[#83E9FF] flex items-center gap-1.5">
           <span>✦</span> Ask AI about this file
         </span>
       </div>
@@ -130,32 +130,32 @@ const ListRow = memo(({ file, index, onQuery, onStar }: {
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: Math.min(index * 0.025, 0.3), duration: 0.3 }}
       className={cn(
-        'group flex items-center gap-3 px-4 py-2.5 rounded-lg',
-        'bg-space-800/40 border border-space-300 cursor-pointer backdrop-blur-sm',
-        'hover:border-space-200 hover:bg-space-700/40 hover:shadow-card-hover',
+        'group flex items-center gap-3 px-4 py-2.5 rounded-lg border border-white/55',
+        'bg-white/45 cursor-pointer backdrop-blur-sm shadow-3xs',
+        'hover:border-brandNavy/20 hover:bg-white/65 hover:shadow-2xs',
         'transition-all duration-200 ease-out',
       )}
       onClick={onQuery}
     >
       <span className="text-lg shrink-0">{icon}</span>
-      <p className="flex-1 text-xs font-medium text-slate-300 truncate">{file.name}</p>
+      <p className="flex-1 text-xs font-bold text-brandNavy truncate text-left">{file.name}</p>
       <span
         className="badge text-2xs shrink-0"
         style={{ background: `${color}15`, color, border: `1px solid ${color}25` }}
       >
         {file.folder}
       </span>
-      <span className="text-2xs text-slate-700 uppercase font-mono w-10 text-right shrink-0">
+      <span className="text-2xs text-brandNavy/50 uppercase font-mono w-10 text-right shrink-0 font-bold">
         {file.type}
       </span>
-      <span className="text-2xs text-slate-700 w-20 text-right shrink-0">{file.size}</span>
-      <span className="text-2xs text-slate-700 w-24 text-right shrink-0">{file.date}</span>
+      <span className="text-2xs text-brandNavy/50 w-20 text-right shrink-0 font-bold">{file.size}</span>
+      <span className="text-2xs text-brandNavy/50 w-24 text-right shrink-0 font-bold">{file.date}</span>
       <button
         onClick={(e) => { e.stopPropagation(); onStar() }}
         className={cn(
           'w-5 h-5 shrink-0 flex items-center justify-center rounded',
           'opacity-0 group-hover:opacity-100 transition-opacity duration-150',
-          file.starred ? 'opacity-100 text-amber-400' : 'text-slate-700',
+          file.starred ? 'opacity-100 text-[#F79256]' : 'text-brandNavy/35',
         )}
       >
         <Star size={11} fill={file.starred ? 'currentColor' : 'none'} />

@@ -47,8 +47,8 @@ export const Header = memo(() => {
     <header
       className={cn(
         'flex items-center justify-between px-5 shrink-0 z-10',
-        'border-b border-space-300',
-        'bg-space-900/60 backdrop-blur-md',
+        'border-b border-white/50',
+        'bg-white/45 backdrop-blur-md shadow-sm',
       )}
       style={{ height: 'var(--header-h)' }}
     >
@@ -62,18 +62,18 @@ export const Header = memo(() => {
         <div
           className={cn(
             'w-8 h-8 rounded-lg shrink-0',
-            'bg-gradient-to-br from-brand-600 to-accent-600',
+            'bg-brandNavy',
             'flex items-center justify-center',
-            'shadow-glow-sm',
+            'shadow-sm',
           )}
         >
-          <span className="text-white text-base leading-none select-none">☁</span>
+          <span className="text-[#83E9FF] text-base leading-none select-none">☁</span>
         </div>
         <div>
-          <h1 className="font-display font-bold text-sm text-slate-200 tracking-tight leading-tight">
+          <h1 className="font-display font-bold text-sm text-brandNavy tracking-tight leading-tight">
             {APP_NAME}
           </h1>
-          <p className="text-2xs text-slate-600 leading-tight">{APP_TAGLINE}</p>
+          <p className="text-2xs text-brandNavy/65 leading-tight">{APP_TAGLINE}</p>
         </div>
       </motion.div>
 
@@ -83,46 +83,46 @@ export const Header = memo(() => {
         <TeamAvatars />
 
         {/* Vertical divider */}
-        <div className="h-4 w-px bg-space-300" />
+        <div className="h-4 w-px bg-brandNavy/10" />
 
         {/* Icons */}
-        <div className="flex items-center gap-3 text-slate-400">
+        <div className="flex items-center gap-3 text-brandNavy/60">
           {/* Status icon */}
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-space-800 border border-space-300 text-3xs font-semibold">
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-white/60 border border-white/80 text-3xs font-semibold shadow-sm">
             <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandEmerald opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brandEmerald" />
             </span>
-            <span className="text-slate-500">{isConnected ? 'Drive Sync' : 'Mock Preview'}</span>
+            <span className="text-brandNavy/60">{isConnected ? 'Drive Sync' : 'Mock Preview'}</span>
           </div>
 
           {/* Notifications bell */}
-          <button className="relative p-1 rounded-md hover:bg-space-600 hover:text-slate-200 transition-colors">
+          <button className="relative p-1 rounded-md hover:bg-white/60 hover:text-brandNavy transition-colors">
             <Bell size={15} />
-            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-rose-500 rounded-full" />
+            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#F79256] rounded-full" />
           </button>
         </div>
 
         {/* Vertical divider */}
-        <div className="h-4 w-px bg-space-300" />
+        <div className="h-4 w-px bg-brandNavy/10" />
 
         {/* User Card matching Sample 1 */}
-        <div className="flex items-center gap-2.5 pl-1 pr-2 py-1 rounded-full bg-space-800/80 border border-space-300 hover:border-space-200 transition-all cursor-pointer">
+        <div className="flex items-center gap-2.5 pl-1 pr-2 py-1 rounded-full bg-white/70 border border-white hover:border-brandNavy/20 shadow-sm transition-all cursor-pointer">
           <img
             src={user.picture}
             alt={user.name}
-            className="w-7 h-7 rounded-full object-cover border border-brand-500/20"
+            className="w-7 h-7 rounded-full object-cover border border-brandNavy/10"
             referrerPolicy="no-referrer"
           />
           <div className="hidden sm:flex flex-col text-left leading-none">
-            <span className="text-2xs font-bold text-slate-300 truncate max-w-[100px]">
+            <span className="text-2xs font-bold text-brandNavy truncate max-w-[100px]">
               {user.name}
             </span>
-            <span className="text-3xs text-slate-600 truncate max-w-[120px] mt-0.5">
+            <span className="text-3xs text-brandNavy/60 truncate max-w-[120px] mt-0.5">
               {user.email}
             </span>
           </div>
-          <ChevronDown size={11} className="text-slate-500" />
+          <ChevronDown size={11} className="text-brandNavy/65" />
         </div>
       </div>
     </header>

@@ -16,7 +16,7 @@ export const DashboardPage = memo(() => {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'files'>('dashboard')
 
   return (
-    <div className="flex flex-row w-screen h-screen overflow-hidden bg-[#030812]">
+    <div className="flex flex-row w-screen h-screen overflow-hidden bg-[#F0F9FF] font-sans">
       {/* ── Sidebar (Left Column - Full Height) ── */}
       <ErrorBoundary>
         <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
@@ -25,7 +25,7 @@ export const DashboardPage = memo(() => {
       {/* ── Main Content Area (Right Column) ── */}
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden relative">
         {/* Decorative ambient glowing dots / grid in background */}
-        <div className="absolute inset-0 grid-pattern opacity-40 pointer-events-none z-0" />
+        <div className="absolute inset-0 grid-pattern opacity-60 pointer-events-none z-0" />
         
         {/* ── Header ── */}
         <ErrorBoundary>
@@ -36,12 +36,12 @@ export const DashboardPage = memo(() => {
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-6 z-10 relative scrollable">
           {activeTab === 'dashboard' ? (
             /* ── Dashboard Tab View ── */
-            <div className="flex flex-col gap-5 max-w-[1400px] mx-auto animate-fade-in">
+            <div className="flex flex-col gap-5 max-w-[1400px] mx-auto animate-fade-in text-brandNavy">
               {/* Header Title section */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-display font-bold text-slate-100 tracking-tight">My Dashboard</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">Welcome back! Here is a summary of your indexed document repository.</p>
+                  <h2 className="text-xl font-display font-bold text-brandNavy tracking-tight">My Dashboard</h2>
+                  <p className="text-xs text-brandNavy/65 mt-0.5 font-semibold">Welcome back! Here is a summary of your indexed document repository.</p>
                 </div>
               </div>
 
@@ -55,7 +55,7 @@ export const DashboardPage = memo(() => {
                 {/* Left Area (65% on large screens): Query Bar, Results & Search Activity */}
                 <div className="lg:col-span-2 flex flex-col gap-5 min-w-0">
                   <ErrorBoundary>
-                    <div className="glass-card rounded-2xl overflow-hidden border border-space-300">
+                    <div className="glass-card rounded-2xl overflow-hidden border border-white/50 shadow-sm">
                       <QueryBar />
                       <QueryResults />
                     </div>
@@ -80,16 +80,16 @@ export const DashboardPage = memo(() => {
             </div>
           ) : (
             /* ── File Explorer Tab View ── */
-            <div className="flex flex-col gap-4 h-full max-w-[1400px] mx-auto animate-fade-in">
+            <div className="flex flex-col gap-4 h-full max-w-[1400px] mx-auto animate-fade-in text-brandNavy">
               <div className="flex items-center justify-between shrink-0">
                 <div>
-                  <h2 className="text-xl font-display font-bold text-slate-100 tracking-tight">Resources</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">Browse, search, sort, and star documents in your storage vaults.</p>
+                  <h2 className="text-xl font-display font-bold text-brandNavy tracking-tight">Resources</h2>
+                  <p className="text-xs text-brandNavy/65 mt-0.5 font-semibold">Browse, search, sort, and star documents in your storage vaults.</p>
                 </div>
               </div>
 
               {/* File Grid */}
-              <div className="flex-1 glass-card rounded-2xl overflow-hidden border border-space-300 flex flex-col min-h-[500px]">
+              <div className="flex-1 glass-card rounded-2xl overflow-hidden border border-white/50 shadow-sm flex flex-col min-h-[500px]">
                 <ErrorBoundary>
                   <FileGrid />
                 </ErrorBoundary>
