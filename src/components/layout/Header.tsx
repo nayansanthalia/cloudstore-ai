@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion'
-import { Bell, ChevronDown } from 'lucide-react'
+import { Bell, ChevronDown, Moon, Sun } from 'lucide-react'
 import { memo } from 'react'
 
 import { APP_NAME, APP_TAGLINE } from '@/constants'
 import { useStorageStore } from '@/features/storage/store/storageStore'
+import { useThemeStore } from '@/store/themeStore'
 import { cn } from '@/utils/cn'
 
 // ─── Team Avatars ──────────────────────────────────────────────────────────
@@ -19,10 +20,10 @@ const TeamAvatars = memo(() => (
         key={i}
         src={u.src}
         alt={u.alt}
-        className="w-6 h-6 rounded-full border border-space-900 object-cover"
+        className="w-6 h-6 rounded-full border border-space-900 dark:border-slate-800 object-cover"
       />
     ))}
-    <div className="w-6 h-6 rounded-full bg-space-600 border border-space-300 flex items-center justify-center text-[10px] font-bold text-slate-400">
+    <div className="w-6 h-6 rounded-full bg-space-600 border border-space-300 dark:bg-slate-800 dark:border-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400 dark:text-slate-300">
       +3
     </div>
   </div>
@@ -33,6 +34,7 @@ TeamAvatars.displayName = 'TeamAvatars'
 
 export const Header = memo(() => {
   const { isConnected, userProfile } = useStorageStore()
+  const { theme, toggleTheme } = useThemeStore()
 
   // Default mockup user info if not connected
   const mockUser = {
@@ -47,8 +49,8 @@ export const Header = memo(() => {
     <header
       className={cn(
         'flex items-center justify-between px-5 shrink-0 z-10',
-        'border-b border-white/50',
-        'bg-white/45 backdrop-blur-md shadow-sm',
+        'border-b border-white/50 dark:border-white/5',
+        'bg-white/45 dark:bg-[#0B1521]/70 backdrop-blur-md shadow-sm',
       )}
       style={{ height: 'var(--header-h)' }}
     >
@@ -62,7 +64,7 @@ export const Header = memo(() => {
         <div
           className={cn(
             'w-8 h-8 rounded-lg shrink-0',
-            'bg-brandNavy',
+            'bg-brandNavy dark:bg-white/10',
             'flex items-center justify-center',
             'shadow-sm',
           )}
@@ -70,10 +72,10 @@ export const Header = memo(() => {
           <span className="text-[#83E9FF] text-base leading-none select-none">☁</span>
         </div>
         <div>
-          <h1 className="font-display font-bold text-sm text-brandNavy tracking-tight leading-tight">
+          <h1 className="font-display font-bold text-sm text-brandNavy dark:text-white tracking-tight leading-tight">
             {APP_NAME}
           </h1>
-          <p className="text-2xs text-brandNavy/65 leading-tight">{APP_TAGLINE}</p>
+          <p className="text-2xs text-brandNavy/65 dark:text-slate-400 leading-tight">{APP_TAGLINE}</p>
         </div>
       </motion.div>
 
@@ -83,46 +85,55 @@ export const Header = memo(() => {
         <TeamAvatars />
 
         {/* Vertical divider */}
-        <div className="h-4 w-px bg-brandNavy/10" />
+        <div className="h-4 w-px bg-brandNavy/10 dark:bg-white/10" />
 
         {/* Icons */}
-        <div className="flex items-center gap-3 text-brandNavy/60">
+        <div className="flex items-center gap-3 text-brandNavy/60 dark:text-slate-400">
           {/* Status icon */}
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-white/60 border border-white/80 text-3xs font-semibold shadow-sm">
+          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-white/60 border border-white/80 dark:bg-white/5 dark:border-white/10 text-3xs font-semibold shadow-sm">
             <span className="relative flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandEmerald opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brandEmerald" />
             </span>
-            <span className="text-brandNavy/60">{isConnected ? 'Drive Sync' : 'Mock Preview'}</span>
+            <span className="text-brandNavy/60 dark:text-slate-300">{isConnected ? 'Drive Sync' : 'Mock Preview'}</span>
           </div>
 
+          {/* Theme Switcher Button */}
+          <button
+            onClick={toggleTheme}
+            className="p-1 rounded-md hover:bg-white/60 hover:text-brandNavy dark:hover:bg-white/10 dark:hover:text-white transition-colors text-brandNavy/60 dark:text-slate-400"
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          >
+            {theme === 'light' ? <Moon size={15} /> : <Sun size={15} />}
+          </button>
+
           {/* Notifications bell */}
-          <button className="relative p-1 rounded-md hover:bg-white/60 hover:text-brandNavy transition-colors">
+          <button className="relative p-1 rounded-md hover:bg-white/60 hover:text-brandNavy dark:hover:bg-white/10 dark:hover:text-white transition-colors">
             <Bell size={15} />
             <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#F79256] rounded-full" />
           </button>
         </div>
 
         {/* Vertical divider */}
-        <div className="h-4 w-px bg-brandNavy/10" />
+        <div className="h-4 w-px bg-brandNavy/10 dark:bg-white/10" />
 
         {/* User Card matching Sample 1 */}
-        <div className="flex items-center gap-2.5 pl-1 pr-2 py-1 rounded-full bg-white/70 border border-white hover:border-brandNavy/20 shadow-sm transition-all cursor-pointer">
+        <div className="flex items-center gap-2.5 pl-1 pr-2 py-1 rounded-full bg-white/70 border border-white dark:bg-white/5 dark:border-white/10 hover:border-brandNavy/20 dark:hover:border-white/20 shadow-sm transition-all cursor-pointer">
           <img
             src={user.picture}
             alt={user.name}
-            className="w-7 h-7 rounded-full object-cover border border-brandNavy/10"
+            className="w-7 h-7 rounded-full object-cover border border-brandNavy/10 dark:border-white/10"
             referrerPolicy="no-referrer"
           />
           <div className="hidden sm:flex flex-col text-left leading-none">
-            <span className="text-2xs font-bold text-brandNavy truncate max-w-[100px]">
+            <span className="text-2xs font-bold text-brandNavy dark:text-white truncate max-w-[100px]">
               {user.name}
             </span>
-            <span className="text-3xs text-brandNavy/60 truncate max-w-[120px] mt-0.5">
+            <span className="text-3xs text-brandNavy/60 dark:text-slate-400 truncate max-w-[120px] mt-0.5">
               {user.email}
             </span>
           </div>
-          <ChevronDown size={11} className="text-brandNavy/65" />
+          <ChevronDown size={11} className="text-brandNavy/65 dark:text-slate-400" />
         </div>
       </div>
     </header>
