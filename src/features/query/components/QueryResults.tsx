@@ -22,20 +22,20 @@ const EmptyQueryState = memo(({ onSelectSuggestion }: { onSelectSuggestion: (s: 
     >
       ✦
     </motion.div>
-    <h2 className="font-display text-lg font-semibold text-slate-200 mb-2">
+    <h2 className="font-display text-lg font-semibold text-brandNavy dark:text-slate-200 mb-2">
       Ask your storage anything
     </h2>
-    <p className="text-sm text-slate-450 max-w-sm leading-relaxed mb-6">
+    <p className="text-sm text-brandNavy/50 dark:text-slate-400 max-w-sm leading-relaxed mb-6">
       Use natural language to find, analyse, and manage your files. Powered by RAG + Claude.
     </p>
-    <div className="flex flex-col gap-2 text-xs text-slate-400">
+    <div className="flex flex-col gap-2 text-xs text-brandNavy/50 dark:text-slate-400">
       {[
         'Find invoices above ₹10,000',
         'Python developer resumes',
         '3-year contracts',
         'Contracts expiring in 2027',
       ].map((example) => (
-        <p key={example} className="font-mono text-slate-550 hover:text-slate-200 transition-colors cursor-pointer" onClick={() => onSelectSuggestion(example)}>"{example}"</p>
+        <p key={example} className="font-mono text-brandNavy/40 dark:text-slate-500 hover:text-brandNavy dark:hover:text-slate-200 transition-colors cursor-pointer" onClick={() => onSelectSuggestion(example)}>"{example}"</p>
       ))}
     </div>
   </motion.div>
@@ -50,9 +50,9 @@ const NoResultsState = memo(({ answer }: { answer: string }) => (
     animate={{ opacity: 1, y: 0 }}
     className="flex flex-col items-center justify-center text-center px-8 py-16"
   >
-    <SearchX size={36} className="text-slate-700 mb-4" />
-    <h3 className="text-sm font-semibold text-slate-500 mb-2">No files matched</h3>
-    <p className="text-xs text-slate-700 max-w-sm leading-relaxed">{answer}</p>
+    <SearchX size={36} className="text-brandNavy/30 dark:text-slate-600 mb-4" />
+    <h3 className="text-sm font-semibold text-brandNavy/60 dark:text-slate-400 mb-2">No files matched</h3>
+    <p className="text-xs text-brandNavy/50 dark:text-slate-500 max-w-sm leading-relaxed">{answer}</p>
   </motion.div>
 ))
 NoResultsState.displayName = 'NoResultsState'
@@ -107,11 +107,11 @@ const MatchCountHeader = memo(({ count }: { count: number }) => (
     animate={{ opacity: 1 }}
     className="flex items-center gap-2 mb-3"
   >
-    <div className="h-px flex-1 bg-space-300" />
-    <span className="text-2xs text-slate-700 px-2">
+    <div className="h-px flex-1 bg-brandNavy/10 dark:bg-white/10" />
+    <span className="text-2xs text-brandNavy/50 dark:text-slate-400 px-2">
       {count} file{count !== 1 ? 's' : ''} matched
     </span>
-    <div className="h-px flex-1 bg-space-300" />
+    <div className="h-px flex-1 bg-brandNavy/10 dark:bg-white/10" />
   </motion.div>
 ))
 MatchCountHeader.displayName = 'MatchCountHeader'

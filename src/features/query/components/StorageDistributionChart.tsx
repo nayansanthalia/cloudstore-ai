@@ -48,17 +48,17 @@ export const StorageDistributionChart = memo(() => {
   const data = getData()
 
   return (
-    <div className="glass-card rounded-2xl p-4.5 flex flex-col justify-between flex-1 min-h-[300px] border border-white/50 shadow-sm text-brandNavy">
+    <div className="glass-card rounded-2xl p-4.5 flex flex-col justify-between flex-1 min-h-[300px] border border-white/50 dark:border-white/5 shadow-sm text-brandNavy dark:text-slate-200">
       {/* Header & Dropdown */}
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="text-sm font-display font-bold text-brandNavy">Storage Distribution</h3>
-          <p className="text-3xs text-brandNavy/65 mt-0.5 font-semibold">Tracking index size vs. document counts across categories</p>
+          <h3 className="text-sm font-display font-bold text-brandNavy dark:text-white">Storage Distribution</h3>
+          <p className="text-3xs text-brandNavy/65 dark:text-slate-400 mt-0.5 font-semibold">Tracking index size vs. document counts across categories</p>
         </div>
         <select 
           value={timeframe}
           onChange={(e) => setTimeframe(e.target.value as any)}
-          className="text-3xs bg-white border border-slate-200 rounded px-2.5 py-1 text-brandNavy font-semibold outline-none hover:border-brandNavy/25 cursor-pointer shadow-sm"
+          className="text-3xs bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 rounded px-2.5 py-1 text-brandNavy dark:text-slate-200 font-semibold outline-none hover:border-brandNavy/25 dark:hover:border-white/20 cursor-pointer shadow-sm"
         >
           <option value="Weekly">Weekly</option>
           <option value="Monthly">Monthly</option>
@@ -70,11 +70,11 @@ export const StorageDistributionChart = memo(() => {
       <div className="flex items-center gap-4 text-3xs font-bold mb-4">
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-brandEmerald" />
-          <span className="text-brandNavy/60">File Count Share</span>
+          <span className="text-brandNavy/60 dark:text-slate-400">File Count Share</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-[#F79256]" />
-          <span className="text-brandNavy/60">Index Size Share</span>
+          <span className="text-brandNavy/60 dark:text-slate-400">Index Size Share</span>
         </div>
       </div>
 
@@ -107,7 +107,7 @@ export const StorageDistributionChart = memo(() => {
               {/* Stacked Progress Bars */}
               <div className="flex-1 flex flex-col gap-1.5 relative py-1">
                 {/* File Count Share Bar */}
-                <div className="h-2 w-full bg-slate-150 border border-slate-200/50 rounded-full overflow-hidden shadow-inner">
+                <div className="h-2 w-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 rounded-full overflow-hidden shadow-inner">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${item.countPercent}%` }}
@@ -117,7 +117,7 @@ export const StorageDistributionChart = memo(() => {
                 </div>
 
                 {/* Index Size Share Bar */}
-                <div className="h-2 w-full bg-slate-150 border border-slate-200/50 rounded-full overflow-hidden shadow-inner">
+                <div className="h-2 w-full bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 rounded-full overflow-hidden shadow-inner">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${item.sizePercent}%` }}
@@ -127,12 +127,12 @@ export const StorageDistributionChart = memo(() => {
                 </div>
               </div>
 
-              {/* Tooltip Hover Badge matching Sample 1 */}
+              {/* Tooltip Hover Badge */}
               {hoveredIdx === idx && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  className="absolute z-20 left-[60%] top-[-25px] transform -translate-x-1/2 bg-white border border-brandNavy/15 px-2.5 py-1 rounded-lg shadow-lg flex items-center gap-2 text-[10px] font-bold font-mono text-brandNavy"
+                  className="absolute z-20 left-[60%] top-[-25px] transform -translate-x-1/2 bg-white dark:bg-[#1E293B] border border-brandNavy/15 dark:border-white/10 px-2.5 py-1 rounded-lg shadow-lg flex items-center gap-2 text-[10px] font-bold font-mono text-brandNavy dark:text-white"
                 >
                   <span className="text-brandEmerald">{item.count} docs ({item.countPercent}%)</span>
                   <span className="text-brandNavy/20">|</span>
