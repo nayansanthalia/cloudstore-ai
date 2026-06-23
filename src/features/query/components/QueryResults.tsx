@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { AlertCircle, RefreshCw, SearchX } from 'lucide-react'
+import { AlertCircle, RefreshCw, SearchX, Sparkles, DollarSign, Users, FileText, Clock } from 'lucide-react'
 import { memo } from 'react'
 
 import { useAIQuery } from '@/features/query/hooks/useAIQuery'
@@ -7,35 +7,112 @@ import { PipelineViz } from './PipelineViz'
 import { AnswerCard, ResultCard } from './ResultCard'
 import { cn } from '@/utils/cn'
 
+// ─── Suggestion Cards Config ───────────────────────────────────────────────
+
+const SUGGESTIONS = [
+  {
+    title: 'Financial Analysis',
+    prompt: 'Find invoices above ₹10,000',
+    icon: DollarSign,
+    color: '#0EFA80'
+  },
+  {
+    title: 'Talent Acquisition',
+    prompt: 'Python developer resumes',
+    icon: Users,
+    color: '#60A5FA'
+  },
+  {
+    title: 'Agreement Review',
+    prompt: '3-year contracts',
+    icon: FileText,
+    color: '#F59E0B'
+  },
+  {
+    title: 'Contract Expiries',
+    prompt: 'Contracts expiring in 2027',
+    icon: Clock,
+    color: '#EC4899'
+  }
+]
+
+interface SuggestionCardProps {
+  title: string
+  prompt: string
+  icon: any
+  color: string
+  onClick: () => void
+}
+
+const SuggestionCard = memo(({ title, prompt, icon: Icon, color, onClick }: SuggestionCardProps) => (
+  <motion.button
+    whileHover={{ y: -2, scale: 1.01 }}
+    whileTap={{ scale: 0.99 }}
+    onClick={onClick}
+    className={cn(
+      'glass-card p-3.5 rounded-xl border text-left flex items-start gap-3.5 transition-all duration-200 cursor-pointer w-full',
+      'bg-white/40 border-white/60 hover:bg-white/70 hover:border-brandNavy/15 shadow-2xs hover:shadow-sm',
+      'dark:bg-white/5 dark:border-white/5 dark:hover:bg-white/10 dark:hover:border-white/10'
+    )}
+  >
+    <div 
+      className="p-2 rounded-lg shrink-0 flex items-center justify-center border"
+      style={{ 
+        background: `${color}15`, 
+        borderColor: `${color}25`,
+        color: color 
+      }}
+    >
+      <Icon size={14} />
+    </div>
+    <div className="flex-1 min-w-0 leading-tight">
+      <h4 className="text-2xs font-extrabold text-brandNavy dark:text-white uppercase tracking-wider">{title}</h4>
+      <p className="text-2xs text-brandNavy/60 dark:text-slate-400 mt-1 font-semibold leading-normal truncate">{prompt}</p>
+    </div>
+  </motion.button>
+))
+SuggestionCard.displayName = 'SuggestionCard'
+
 // ─── Empty State ───────────────────────────────────────────────────────────
 
 const EmptyQueryState = memo(({ onSelectSuggestion }: { onSelectSuggestion: (s: string) => void }) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.96 }}
+    initial={{ opacity: 0, scale: 0.97 }}
     animate={{ opacity: 1, scale: 1 }}
-    className="flex flex-col items-center justify-center h-full text-center px-8 py-16"
+    className="flex flex-col items-center justify-center h-full text-center px-6 py-12"
   >
-    <motion.div
-      animate={{ y: [0, -6, 0] }}
-      transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-      className="text-5xl mb-4 select-none"
-    >
-      ✦
-    </motion.div>
-    <h2 className="font-display text-lg font-semibold text-slate-200 mb-2">
+    {/* Sparkling Ambient Glow Logo */}
+    <div className="relative mb-6">
+      <div className="absolute inset-0 bg-brandSky/25 dark:bg-brandSky/20 rounded-full blur-xl animate-pulse" />
+      <div className="relative w-14 h-14 rounded-2xl bg-white/70 border border-white/80 dark:bg-white/5 dark:border-white/10 flex items-center justify-center text-brandSky shadow-md">
+        <Sparkles size={22} className="animate-pulse" />
+      </div>
+    </div>
+
+    {/* Header */}
+    <h2 className="font-display text-2xl font-extrabold text-brandNavy dark:text-white tracking-tight mb-2">
       Ask your storage anything
     </h2>
-    <p className="text-sm text-slate-450 max-w-sm leading-relaxed mb-6">
+    <p className="text-xs text-brandNavy/60 dark:text-slate-450 max-w-sm leading-relaxed mb-8 font-semibold">
       Use natural language to find, analyse, and manage your files. Powered by RAG + Claude.
     </p>
-    <div className="flex flex-col gap-2 text-xs text-slate-400">
-      {[
-        'Find invoices above ₹10,000',
-        'Python developer resumes',
-        '3-year contracts',
-        'Contracts expiring in 2027',
-      ].map((example) => (
-        <p key={example} className="font-mono text-slate-550 hover:text-slate-200 transition-colors cursor-pointer" onClick={() => onSelectSuggestion(example)}>"{example}"</p>
+
+    {/* Section Label */}
+    <span className="text-[10px] font-extrabold text-brandNavy/40 dark:text-slate-500 uppercase tracking-widest mb-3.5">
+      Get started with a suggestion
+    </span>
+
+    {/* 2x2 Responsive Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 max-w-xl w-full">
+      {SUGGESTIONS.map((item) => (
+        <SuggestionCard
+          key={item.prompt}
+          title={item.title}
+          prompt={item.prompt}
+          icon={item.icon}
+          color={item.color}
+          onClick={() => onSelectSuggestion(item.prompt)}
+        />
       ))}
     </div>
   </motion.div>
@@ -50,9 +127,9 @@ const NoResultsState = memo(({ answer }: { answer: string }) => (
     animate={{ opacity: 1, y: 0 }}
     className="flex flex-col items-center justify-center text-center px-8 py-16"
   >
-    <SearchX size={36} className="text-slate-700 mb-4" />
-    <h3 className="text-sm font-semibold text-slate-500 mb-2">No files matched</h3>
-    <p className="text-xs text-slate-700 max-w-sm leading-relaxed">{answer}</p>
+    <SearchX size={36} className="text-brandNavy/30 dark:text-slate-600 mb-4" />
+    <h3 className="text-sm font-semibold text-brandNavy/60 dark:text-slate-400 mb-2">No files matched</h3>
+    <p className="text-xs text-brandNavy/50 dark:text-slate-500 max-w-sm leading-relaxed">{answer}</p>
   </motion.div>
 ))
 NoResultsState.displayName = 'NoResultsState'
@@ -107,11 +184,11 @@ const MatchCountHeader = memo(({ count }: { count: number }) => (
     animate={{ opacity: 1 }}
     className="flex items-center gap-2 mb-3"
   >
-    <div className="h-px flex-1 bg-space-300" />
-    <span className="text-2xs text-slate-700 px-2">
+    <div className="h-px flex-1 bg-brandNavy/10 dark:bg-white/10" />
+    <span className="text-2xs text-brandNavy/50 dark:text-slate-400 px-2">
       {count} file{count !== 1 ? 's' : ''} matched
     </span>
-    <div className="h-px flex-1 bg-space-300" />
+    <div className="h-px flex-1 bg-brandNavy/10 dark:bg-white/10" />
   </motion.div>
 ))
 MatchCountHeader.displayName = 'MatchCountHeader'

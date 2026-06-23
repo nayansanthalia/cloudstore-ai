@@ -1,131 +1,186 @@
-import { motion } from 'framer-motion'
-import { Bell, ChevronDown } from 'lucide-react'
-import { memo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronDown, Menu, LogOut, RefreshCw, Cloud, Bot } from 'lucide-react'
+import { memo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { APP_NAME, APP_TAGLINE } from '@/constants'
+import { APP_NAME } from '@/constants'
 import { useStorageStore } from '@/features/storage/store/storageStore'
 import { cn } from '@/utils/cn'
 
-// ─── Team Avatars ──────────────────────────────────────────────────────────
+interface HeaderProps {
+  onToggleSidebar: () => void
+}
 
-const TeamAvatars = memo(() => (
-  <div className="flex items-center -space-x-2 shrink-0">
-    {[
-      { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=80', alt: 'Sarah' },
-      { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=80', alt: 'Michael' },
-      { src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=80', alt: 'Emma' },
-    ].map((u, i) => (
-      <img
-        key={i}
-        src={u.src}
-        alt={u.alt}
-        className="w-6 h-6 rounded-full border border-space-900 object-cover"
-      />
-    ))}
-    <div className="w-6 h-6 rounded-full bg-space-600 border border-space-300 flex items-center justify-center text-[10px] font-bold text-slate-400">
-      +3
-    </div>
-  </div>
-))
-TeamAvatars.displayName = 'TeamAvatars'
+export const Header = memo(({ onToggleSidebar }: HeaderProps) => {
+  const { isConnected, userProfile, isSyncing, syncFiles, disconnectDrive } = useStorageStore()
+  const navigate = useNavigate()
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false)
 
-// ─── Header Component ──────────────────────────────────────────────────────
-
-export const Header = memo(() => {
-  const { isConnected, userProfile } = useStorageStore()
-
-  // Default mockup user info if not connected
-  const mockUser = {
-    name: 'Alex Williamson',
-    email: 'williamson213@gmail.com',
-    picture: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=80',
+  const handleConnect = () => {
+    window.location.href = 'http://localhost:5000/api/auth/google'
   }
 
-  const user = isConnected && userProfile ? userProfile : mockUser
+  // Default mockup user info if not connected (cleaner, no hardcoded email to count as mock data)
+  const user = isConnected && userProfile ? userProfile : {
+    name: 'Guest User',
+    email: 'Not Connected',
+    picture: ''
+  }
 
   return (
-    <header
-      className={cn(
-        'flex items-center justify-between px-5 shrink-0 z-10',
-        'border-b border-white/50',
-        'bg-white/45 backdrop-blur-md shadow-sm',
-      )}
-      style={{ height: 'var(--header-h)' }}
-    >
-      {/* Left: Brand Logo */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="flex items-center gap-3 shrink-0"
-      >
-        <div
-          className={cn(
-            'w-8 h-8 rounded-lg shrink-0',
-            'bg-brandNavy',
-            'flex items-center justify-center',
-            'shadow-sm',
-          )}
-        >
-          <span className="text-[#83E9FF] text-base leading-none select-none">☁</span>
-        </div>
-        <div>
-          <h1 className="font-display font-bold text-sm text-brandNavy tracking-tight leading-tight">
-            {APP_NAME}
-          </h1>
-          <p className="text-2xs text-brandNavy/65 leading-tight">{APP_TAGLINE}</p>
-        </div>
-      </motion.div>
-
-      {/* Right: Actions, Avatars, Notifications, User Profile */}
-      <div className="flex items-center gap-5">
-        {/* Avatars group */}
-        <TeamAvatars />
-
-        {/* Vertical divider */}
-        <div className="h-4 w-px bg-brandNavy/10" />
-
-        {/* Icons */}
-        <div className="flex items-center gap-3 text-brandNavy/60">
-          {/* Status icon */}
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-white/60 border border-white/80 text-3xs font-semibold shadow-sm">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandEmerald opacity-75" />
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-brandEmerald" />
-            </span>
-            <span className="text-brandNavy/60">{isConnected ? 'Drive Sync' : 'Mock Preview'}</span>
-          </div>
-
-          {/* Notifications bell */}
-          <button className="relative p-1 rounded-md hover:bg-white/60 hover:text-brandNavy transition-colors">
-            <Bell size={15} />
-            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#F79256] rounded-full" />
+    <div className="w-full flex justify-center px-6 pt-4 pb-2 z-20 shrink-0">
+      <header className={cn(
+        'backdrop-blur-xl rounded-full border shadow-lg max-w-5xl w-full flex items-center justify-between py-2 px-6 relative transition-all duration-200',
+        'bg-white/70 border-black/10 text-brandNavy',
+        'dark:bg-[#0B1521]/70 dark:border-white/15 dark:text-white'
+      )}>
+        {/* Left: Sidebar Toggle & Logo */}
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onToggleSidebar}
+            className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-brandNavy/60 dark:text-slate-400 hover:text-brandNavy dark:hover:text-white transition-colors cursor-pointer"
+            aria-label="Toggle Sidebar"
+          >
+            <Menu size={16} />
           </button>
-        </div>
-
-        {/* Vertical divider */}
-        <div className="h-4 w-px bg-brandNavy/10" />
-
-        {/* User Card matching Sample 1 */}
-        <div className="flex items-center gap-2.5 pl-1 pr-2 py-1 rounded-full bg-white/70 border border-white hover:border-brandNavy/20 shadow-sm transition-all cursor-pointer">
-          <img
-            src={user.picture}
-            alt={user.name}
-            className="w-7 h-7 rounded-full object-cover border border-brandNavy/10"
-            referrerPolicy="no-referrer"
-          />
-          <div className="hidden sm:flex flex-col text-left leading-none">
-            <span className="text-2xs font-bold text-brandNavy truncate max-w-[100px]">
-              {user.name}
-            </span>
-            <span className="text-3xs text-brandNavy/60 truncate max-w-[120px] mt-0.5">
-              {user.email}
+          
+          <div className="flex items-center gap-2.5 cursor-pointer hover:opacity-90 transition-opacity" onClick={() => navigate('/')}>
+            <div className="w-7 h-7 rounded-full bg-brandNavy dark:bg-white/10 flex items-center justify-center text-white">
+              <Bot size={14} className="text-brandSky animate-float" />
+            </div>
+            <span className="font-display font-bold text-sm tracking-tight hidden sm:inline-block">
+              {APP_NAME}
             </span>
           </div>
-          <ChevronDown size={11} className="text-brandNavy/65" />
         </div>
-      </div>
-    </header>
+
+        {/* Center: Navigation Links (Same as Homepage) */}
+        <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-brandNavy/75 dark:text-slate-350">
+          <a href="/" className="hover:text-brandNavy dark:hover:text-white transition-colors">Home</a>
+          <a href="/#features" className="hover:text-brandNavy dark:hover:text-white transition-colors">Features</a>
+          <a href="/#demo" className="hover:text-brandNavy dark:hover:text-white transition-colors">Interactive Demo</a>
+          <a href="/#pricing" className="hover:text-brandNavy dark:hover:text-white transition-colors">Pricing</a>
+          <a href="/#faq" className="hover:text-brandNavy dark:hover:text-white transition-colors">FAQ</a>
+        </nav>
+
+        {/* Right: Theme Toggle, Sync Action, and Profile */}
+        <div className="flex items-center gap-3">
+          {/* Connection Status & Sync */}
+          {isConnected ? (
+            <button
+              onClick={() => void syncFiles()}
+              disabled={isSyncing}
+              className={cn(
+                'hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-3xs font-extrabold transition-all border shadow-sm',
+                isSyncing
+                  ? 'bg-slate-100 text-slate-400 border-slate-200 dark:bg-white/5 dark:text-slate-600 dark:border-white/5'
+                  : 'bg-brandNavy/5 border-brandNavy/10 text-brandNavy dark:bg-white/5 dark:border-white/10 dark:text-brandSky hover:bg-brandNavy/10 dark:hover:bg-white/10'
+              )}
+            >
+              <RefreshCw size={10} className={cn(isSyncing && 'animate-spin')} />
+              <span>{isSyncing ? 'Syncing...' : 'Sync'}</span>
+            </button>
+          ) : (
+            <button
+              onClick={handleConnect}
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-3xs font-extrabold border bg-brandSky/10 border-brandSky/20 text-brandNavy dark:text-brandSky dark:border-brandSky/30 hover:bg-brandSky/20 transition-all cursor-pointer"
+            >
+              <Cloud size={10} />
+              <span>Connect</span>
+            </button>
+          )}
+
+
+
+          {/* Profile Menu */}
+          <div className="relative">
+            <button
+              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+              className="flex items-center gap-1.5 pl-1 pr-2 py-0.5 rounded-full bg-white/70 border border-white dark:bg-white/5 dark:border-white/10 hover:border-brandNavy/20 dark:hover:border-white/20 shadow-sm transition-all cursor-pointer text-xs"
+            >
+              {user.picture ? (
+                <img
+                  src={user.picture}
+                  alt={user.name}
+                  className="w-5 h-5 rounded-full object-cover border border-black/5 dark:border-white/10"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-5 h-5 rounded-full bg-brandNavy dark:bg-white/10 flex items-center justify-center text-white text-[9px] font-bold">
+                  {user.name.charAt(0)}
+                </div>
+              )}
+              <span className="hidden lg:inline text-3xs font-bold truncate max-w-[80px]">
+                {user.name}
+              </span>
+              <ChevronDown size={10} className="text-brandNavy/65 dark:text-slate-400" />
+            </button>
+
+            {/* Profile Dropdown */}
+            <AnimatePresence>
+              {profileDropdownOpen && (
+                <>
+                  {/* Backdrop */}
+                  <div className="fixed inset-0 z-30" onClick={() => setProfileDropdownOpen(false)} />
+                  
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 8 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className={cn(
+                      'absolute right-0 mt-2 w-48 rounded-xl border p-2 shadow-xl z-40',
+                      'bg-white border-black/10 text-brandNavy',
+                      'dark:bg-[#0B1521] dark:border-white/10 dark:text-white'
+                    )}
+                  >
+                    <div className="px-3 py-2 border-b border-black/5 dark:border-white/5 mb-1.5 text-left">
+                      <p className="text-2xs font-bold truncate">{user.name}</p>
+                      <p className="text-3xs text-brandNavy/50 dark:text-slate-450 truncate mt-0.5">{user.email}</p>
+                    </div>
+                    {isConnected ? (
+                      <>
+                        <button
+                          onClick={() => {
+                            setProfileDropdownOpen(false)
+                            void syncFiles()
+                          }}
+                          className="w-full text-left text-2xs font-bold px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors flex items-center gap-2"
+                        >
+                          <RefreshCw size={12} className={cn(isSyncing && 'animate-spin')} />
+                          Sync Google Drive
+                        </button>
+                        <button
+                          onClick={() => {
+                            setProfileDropdownOpen(false)
+                            void disconnectDrive()
+                          }}
+                          className="w-full text-left text-2xs font-bold px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-rose-500 hover:text-rose-600 transition-colors flex items-center gap-2"
+                        >
+                          <LogOut size={12} />
+                          Disconnect Drive
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false)
+                          handleConnect()
+                        }}
+                        className="w-full text-left text-2xs font-bold px-3 py-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-brandSky transition-colors flex items-center gap-2"
+                      >
+                        <Cloud size={12} />
+                        Connect Google Drive
+                      </button>
+                    )}
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </header>
+    </div>
   )
 })
 

@@ -3,7 +3,7 @@ import { ChevronDown, ChevronUp, Lightbulb, Sparkles } from 'lucide-react'
 import { memo, useState } from 'react'
 
 import { FILE_TYPE_ICONS, FOLDER_META } from '@/constants'
-import { MOCK_FILES } from '@/features/storage/data/mockFiles'
+import { useStorageStore } from '@/features/storage/store/storageStore'
 import type { FileMatch } from '@/types'
 import { cn } from '@/utils/cn'
 
@@ -75,7 +75,8 @@ InfoRow.displayName = 'InfoRow'
 export const ResultCard = memo(({ match, index }: ResultCardProps) => {
   const [expanded, setExpanded] = useState(false)
 
-  const file = MOCK_FILES.find((f) => f.id === match.id)
+  const { files } = useStorageStore()
+  const file = files.find((f) => f.id === match.id)
   if (!file) return null
 
   const folderMeta = FOLDER_META[file.folder]

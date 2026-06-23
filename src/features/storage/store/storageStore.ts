@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import { devtools, subscribeWithSelector } from 'zustand/middleware'
 import axios from 'axios'
 
-import { MOCK_FILES } from '@/features/storage/data/mockFiles'
 import type { CloudFile, FilterConfig, FolderName, SortConfig, SortField } from '@/types'
 
 const API_BASE_URL = 'http://localhost:5000/api'
@@ -109,15 +108,15 @@ const DEFAULT_SORT: SortConfig = {
 export const useStorageStore = create<StorageState>()(
   devtools(
     subscribeWithSelector((set, get) => ({
-      // Initial data - start with MOCK_FILES as a fallback/preview
-      files: MOCK_FILES,
+      // Initial data - start empty (no mock data)
+      files: [],
       isConnected: false,
       isSyncing: false,
       userProfile: null,
       error: null,
       filters: DEFAULT_FILTERS,
       sort: DEFAULT_SORT,
-      filteredFiles: applyFiltersAndSort(MOCK_FILES, DEFAULT_FILTERS, DEFAULT_SORT),
+      filteredFiles: [],
 
       // ── Actions ──────────────────────────────────────────────────────────
 
@@ -215,8 +214,8 @@ export const useStorageStore = create<StorageState>()(
             set({
               isConnected: false,
               userProfile: null,
-              files: MOCK_FILES, // Fallback to mock files if disconnected
-              filteredFiles: applyFiltersAndSort(MOCK_FILES, get().filters, get().sort)
+              files: [], // Empty files if disconnected
+              filteredFiles: []
             })
             return false
           }
@@ -268,8 +267,8 @@ export const useStorageStore = create<StorageState>()(
           set({
             isConnected: false,
             userProfile: null,
-            files: MOCK_FILES, // Reset back to mock preview
-            filteredFiles: applyFiltersAndSort(MOCK_FILES, get().filters, get().sort),
+            files: [], // Reset to empty
+            filteredFiles: [],
             error: null
           })
         }

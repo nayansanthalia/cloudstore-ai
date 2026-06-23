@@ -4,22 +4,24 @@ import { ErrorBoundary } from '@/components/common/ErrorBoundary'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { Sidebar } from '@/components/layout/Sidebar'
-import { StatsRow } from '@/components/layout/StatsRow'
 import { QueryBar } from '@/features/query/components/QueryBar'
 import { QueryResults } from '@/features/query/components/QueryResults'
-import { StorageDistributionChart } from '@/features/query/components/StorageDistributionChart'
-import { SearchActivityChart } from '@/features/query/components/SearchActivityChart'
-import { SmartAIInsights } from '@/features/query/components/SmartAIInsights'
 import { FileGrid } from '@/features/storage/components/FileGrid'
 
 export const DashboardPage = memo(() => {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'files'>('dashboard')
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   return (
-    <div className="flex flex-row w-screen h-screen overflow-hidden bg-[#F0F9FF] font-sans">
+    <div className="flex flex-row w-screen h-screen overflow-hidden bg-[#F0F9FF] dark:bg-[#090D16] font-sans">
       {/* ── Sidebar (Left Column - Full Height) ── */}
       <ErrorBoundary>
-        <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+        <Sidebar 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab} 
+          isCollapsed={sidebarCollapsed}
+          onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        />
       </ErrorBoundary>
 
       {/* ── Main Content Area (Right Column) ── */}
@@ -27,69 +29,46 @@ export const DashboardPage = memo(() => {
         {/* Decorative ambient glowing dots / grid in background */}
         <div className="absolute inset-0 grid-pattern opacity-60 pointer-events-none z-0" />
         
-        {/* ── Header ── */}
+        {/* ── Floating Header ── */}
         <ErrorBoundary>
-          <Header />
+          <Header 
+            onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+          />
         </ErrorBoundary>
 
         {/* ── Page Body ── */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-6 z-10 relative scrollable">
+        <main className="flex-1 overflow-hidden z-10 relative flex flex-col min-h-0">
           {activeTab === 'dashboard' ? (
-            /* ── Dashboard Tab View ── */
-            <div className="flex flex-col gap-5 max-w-[1400px] mx-auto animate-fade-in text-brandNavy">
-              {/* Header Title section */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-display font-bold text-brandNavy tracking-tight">My Dashboard</h2>
-                  <p className="text-xs text-brandNavy/65 mt-0.5 font-semibold">Welcome back! Here is a summary of your indexed document repository.</p>
+            /* ── Dashboard Tab View (ChatGPT style chat layout) ── */
+            <div className="flex-1 flex flex-col min-h-0 w-full animate-fade-in text-brandNavy dark:text-slate-200">
+              {/* Centered Scrollable Conversation History */}
+              <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-6 scrollbar-thin">
+                <div className="max-w-3xl mx-auto h-full">
+                  <ErrorBoundary>
+                    <QueryResults />
+                  </ErrorBoundary>
                 </div>
               </div>
 
-              {/* Stats Row */}
-              <ErrorBoundary>
-                <StatsRow />
-              </ErrorBoundary>
-
-              {/* Core Layout Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
-                {/* Left Area (65% on large screens): Query Bar, Results & Search Activity */}
-                <div className="lg:col-span-2 flex flex-col gap-5 min-w-0">
-                  <ErrorBoundary>
-                    <div className="glass-card rounded-2xl overflow-hidden border border-white/50 shadow-sm">
-                      <QueryBar />
-                      <QueryResults />
-                    </div>
-                  </ErrorBoundary>
-
-                  <ErrorBoundary>
-                    <SearchActivityChart />
-                  </ErrorBoundary>
-                </div>
-
-                {/* Right Area (35% on large screens): Distribution & Smart Insights */}
-                <div className="flex flex-col gap-5 min-w-0">
-                  <ErrorBoundary>
-                    <StorageDistributionChart />
-                  </ErrorBoundary>
-
-                  <ErrorBoundary>
-                    <SmartAIInsights />
-                  </ErrorBoundary>
-                </div>
+              {/* Centered Chat Input Box */}
+              <div className="pb-4 px-4 md:px-6 shrink-0">
+                <ErrorBoundary>
+                  <QueryBar />
+                </ErrorBoundary>
               </div>
             </div>
           ) : (
             /* ── File Explorer Tab View ── */
-            <div className="flex flex-col gap-4 h-full max-w-[1400px] mx-auto animate-fade-in text-brandNavy">
+            <div className="flex-1 flex flex-col min-h-0 p-6 max-w-[1400px] w-full mx-auto animate-fade-in text-brandNavy dark:text-slate-200 gap-4">
               <div className="flex items-center justify-between shrink-0">
                 <div>
-                  <h2 className="text-xl font-display font-bold text-brandNavy tracking-tight">Resources</h2>
-                  <p className="text-xs text-brandNavy/65 mt-0.5 font-semibold">Browse, search, sort, and star documents in your storage vaults.</p>
+                  <h2 className="text-xl font-display font-bold text-brandNavy dark:text-white tracking-tight">Resources</h2>
+                  <p className="text-xs text-brandNavy/65 dark:text-slate-400 mt-0.5 font-semibold">Browse, search, sort, and star documents in your storage vaults.</p>
                 </div>
               </div>
 
               {/* File Grid */}
-              <div className="flex-1 glass-card rounded-2xl overflow-hidden border border-white/50 shadow-sm flex flex-col min-h-[500px]">
+              <div className="flex-1 glass-card rounded-2xl overflow-hidden border border-white/50 dark:border-white/10 shadow-sm flex flex-col min-h-0">
                 <ErrorBoundary>
                   <FileGrid />
                 </ErrorBoundary>

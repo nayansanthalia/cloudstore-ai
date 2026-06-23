@@ -54,17 +54,17 @@ export const SearchActivityChart = memo(() => {
   const activityData = getActivityData()
 
   return (
-    <div className="glass-card rounded-2xl p-4.5 flex flex-col justify-between flex-1 min-h-[300px] border border-white/50 shadow-sm text-brandNavy">
+    <div className="glass-card rounded-2xl p-4.5 flex flex-col justify-between flex-1 min-h-[300px] border border-white/50 dark:border-white/5 shadow-sm text-brandNavy dark:text-slate-200">
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-sm font-display font-bold text-brandNavy">Search Analytics</h3>
-          <p className="text-3xs text-brandNavy/65 mt-0.5 font-semibold">Tracking queries, response success, and search trends</p>
+          <h3 className="text-sm font-display font-bold text-brandNavy dark:text-white">Search Analytics</h3>
+          <p className="text-3xs text-brandNavy/65 dark:text-slate-400 mt-0.5 font-semibold">Tracking queries, response success, and search trends</p>
         </div>
         <select 
           value={timeframe}
           onChange={(e) => setTimeframe(e.target.value as any)}
-          className="text-3xs bg-white border border-slate-200 rounded px-2.5 py-1 text-brandNavy font-semibold outline-none hover:border-brandNavy/25 cursor-pointer shadow-sm"
+          className="text-3xs bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 rounded px-2.5 py-1 text-brandNavy dark:text-slate-200 font-semibold outline-none hover:border-brandNavy/25 dark:hover:border-white/20 cursor-pointer shadow-sm"
         >
           <option value="Monthly">Monthly</option>
           <option value="Weekly">Weekly</option>
@@ -87,7 +87,7 @@ export const SearchActivityChart = memo(() => {
         {/* Floating Tooltip matching Sample 1 */}
         {hoveredIdx !== null && (
           <div 
-            className="absolute z-20 bg-white border border-brandNavy/15 rounded-lg px-2.5 py-1 text-center shadow-lg transition-all duration-300"
+            className="absolute z-20 bg-white dark:bg-[#1E293B] border border-brandNavy/15 dark:border-white/10 rounded-lg px-2.5 py-1 text-center shadow-lg transition-all duration-300"
             style={{
               left: `${14.28 * hoveredIdx + 7.14}%`,
               transform: 'translateX(-50%)',
@@ -95,14 +95,14 @@ export const SearchActivityChart = memo(() => {
             }}
           >
             <div className="flex flex-col items-center">
-              <span className="text-[8px] text-brandNavy/50 leading-none font-bold">{activityData[hoveredIdx].dateLabel || 'Active Month'}</span>
-              <span className="text-2xs font-bold text-brandNavy mt-0.5 font-mono">{activityData[hoveredIdx].queries} Queries</span>
+              <span className="text-[8px] text-brandNavy/50 dark:text-slate-400 leading-none font-bold">{activityData[hoveredIdx].dateLabel || 'Active Month'}</span>
+              <span className="text-2xs font-bold text-brandNavy dark:text-white mt-0.5 font-mono">{activityData[hoveredIdx].queries} Queries</span>
               {activityData[hoveredIdx].trendBadge && (
                 <span className="text-[8px] text-brandEmerald font-bold font-mono mt-0.5">{activityData[hoveredIdx].trendBadge}</span>
               )}
             </div>
             {/* Small tooltip arrow */}
-            <div className="w-1.5 h-1.5 bg-white border-r border-b border-brandNavy/15 rotate-45 transform translate-y-0.5 mx-auto" />
+            <div className="w-1.5 h-1.5 bg-white dark:bg-[#1E293B] border-r border-b border-brandNavy/15 dark:border-white/10 rotate-45 transform translate-y-0.5 mx-auto" />
           </div>
         )}
 
@@ -146,7 +146,7 @@ export const SearchActivityChart = memo(() => {
                 </div>
 
                 {/* X-Axis Label */}
-                <span className="text-[10px] font-bold text-brandNavy/50 mt-2 absolute bottom-[-20px]">
+                <span className="text-[10px] font-bold text-brandNavy/50 dark:text-slate-500 mt-2 absolute bottom-[-20px]">
                   {item.month}
                 </span>
               </div>
