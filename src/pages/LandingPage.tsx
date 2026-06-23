@@ -18,23 +18,16 @@ import {
   FileText,
   HelpCircle,
   Menu,
-  X,
-  Moon,
-  Sun
+  X
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useThemeStore } from '../store/themeStore'
-
-
 export function LandingPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  const { theme, toggleTheme } = useThemeStore()
 
   // Scroll Parallax logic
   const { scrollY } = useScroll()
@@ -195,15 +188,8 @@ export function LandingPage() {
             <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
           </nav>
 
-          {/* CTA: Dashboard link & Theme Toggle */}
+          {/* CTA: Dashboard link */}
           <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-white/10 text-brandSky hover:text-white transition-colors cursor-pointer"
-              aria-label="Toggle Theme"
-            >
-              {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-            </button>
             <button 
               onClick={() => navigate('/dashboard')}
               className="text-xs font-extrabold text-brandSky hover:text-white transition-all cursor-pointer px-4.5 py-1.5 rounded-full border border-brandSky/30 hover:border-brandSky bg-brandSky/5 hover:bg-brandSky/10 hover:shadow-[0_0_12px_rgba(56,189,248,0.2)]"
@@ -244,23 +230,7 @@ export function LandingPage() {
                 >
                   Dashboard
                 </button>
-                <div className="flex items-center justify-between border-t border-white/10 pt-4 mt-2">
-                  <span className="text-xs font-bold text-slate-350">Theme</span>
-                  <button
-                    onClick={() => { toggleTheme(); setMobileMenuOpen(false); }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 hover:bg-white/5 text-brandSky hover:text-white transition-all text-xs font-bold"
-                  >
-                    {theme === 'light' ? (
-                      <>
-                        <Moon size={14} /> Dark Mode
-                      </>
-                    ) : (
-                      <>
-                        <Sun size={14} /> Light Mode
-                      </>
-                    )}
-                  </button>
-                </div>
+
               </motion.div>
             )}
           </AnimatePresence>

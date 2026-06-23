@@ -19,22 +19,10 @@
 
     <title>CloudStore AI – Intelligent Storage Query Engine</title>
 
-    <!-- Smart theme init: read saved preference or system default to avoid flash -->
+    <!-- Force dark theme by default -->
     <script>
-      (function () {
-        try {
-          var saved = localStorage.getItem('theme');
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          var theme = saved === 'dark' || saved === 'light' ? saved : (prefersDark ? 'dark' : 'light');
-          if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
-        } catch (e) {
-          // localStorage may be blocked; default to light
-        }
-      })();
+      document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
     </script>
   </head>
   <body>

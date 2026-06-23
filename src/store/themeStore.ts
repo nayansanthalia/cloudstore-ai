@@ -27,28 +27,18 @@ function applyTheme(theme: Theme) {
 }
 
 export const useThemeStore = create<ThemeState>()(
-  subscribeWithSelector((set, get) => ({
-    theme: 'light',
+  subscribeWithSelector((set) => ({
+    theme: 'dark',
 
     toggleTheme: () => {
-      const next: Theme = get().theme === 'light' ? 'dark' : 'light'
-      applyTheme(next)
-      set({ theme: next })
+      // Theme toggling is disabled. System is locked to dark mode.
+      applyTheme('dark')
+      set({ theme: 'dark' })
     },
 
     initTheme: () => {
-      let saved: string | null = null
-      try {
-        saved = localStorage.getItem('theme')
-      } catch {
-        // ignore
-      }
-      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      const initial: Theme =
-        saved === 'dark' || saved === 'light' ? (saved as Theme) : systemDark ? 'dark' : 'light'
-
-      applyTheme(initial)
-      set({ theme: initial })
+      applyTheme('dark')
+      set({ theme: 'dark' })
     },
   }))
 )
