@@ -55,7 +55,7 @@ export function LandingPage() {
         { label: 'Querying Pinecone Vector database...', time: 900 },
         { label: 'Synthesizing response with Claude 3.5 Sonnet...', time: 1500 },
       ],
-      result: 'According to Section 4.2 of NDA_2026_Final.pdf, all Intellectual Property created during the collaboration belongs solely to the Disclosing Party. The Receiving Party is granted a limited, non-exclusive license for project evaluation purposes only.',
+      result: ' According to Section 4.2 of NDA_2026_Final.pdf, all Intellectual Property created during the collaboration belongs solely to the Disclosing Party. The Receiving Party is granted a limited, non-exclusive license for project evaluation purposes only.',
     },
     db: {
       sourceName: 'sales_production_postgres',
@@ -79,7 +79,7 @@ export function LandingPage() {
         { label: 'Filtering outliers (Z-score > 2.5)...', time: 900 },
         { label: 'Compiling anomaly report...', time: 1400 },
       ],
-      result: 'Detected 2 outlier users:\n• User #9142: Error Rate 42.1% (Rate limit violations)\n• User #1203: Error Rate 31.8% (Mismatched API credentials)\nRecommended Action: Email warning triggers are queued for these accounts.',
+      result: ' Detected 2 outlier users:\n• User #9142: Error Rate 42.1% (Rate limit violations)\n• User #1203: Error Rate 31.8% (Mismatched API credentials)\nRecommended Action: Email warning triggers are queued for these accounts.',
     },
   }
 
@@ -138,8 +138,8 @@ export function LandingPage() {
 
   const faqData = [
     {
-      q: 'How does semantic search work in CloudStore AI?',
-      a: 'Unlike traditional keyword searches that require exact matches, CloudStore AI uses modern vector embeddings. It translates your search intent and the semantic meaning of your documents into high-dimensional vectors, allowing the AI agent to understand context, synonyms, and logical relationships to retrieve highly accurate files.',
+      q: 'How does semantic search work in CloudSphere AI?',
+      a: 'Unlike traditional keyword searches that require exact matches, CloudSphere AI uses modern vector embeddings. It translates your search intent and the semantic meaning of your documents into high-dimensional vectors, allowing the AI agent to understand context, synonyms, and logical relationships to retrieve highly accurate files.',
     },
     {
       q: 'Is my document and database data safe?',
@@ -175,7 +175,7 @@ export function LandingPage() {
               <Bot size={16} className="text-brandSky animate-float" />
             </div>
             <span className="font-display font-bold text-sm tracking-tight">
-              CloudStore AI
+              CloudSphere AI
             </span>
           </div>
 
@@ -359,7 +359,7 @@ export function LandingPage() {
                 <div className="flex items-center gap-1.5 border-b border-slate-200 pb-2 mb-3">
                   <div className="w-6 h-6 rounded-full bg-brandNavy flex items-center justify-center text-[10px] text-white">☁</div>
                   <div className="text-left leading-none">
-                    <p className="text-[10px] font-bold text-brandNavy">CloudStore AI</p>
+                    <p className="text-[10px] font-bold text-brandNavy">CloudSphere AI</p>
                     <p className="text-[7px] text-slate-400 mt-0.5">Active Agent</p>
                   </div>
                 </div>
@@ -372,7 +372,7 @@ export function LandingPage() {
                   <div className="flex gap-1.5 items-start">
                     <div className="w-4 h-4 rounded-full bg-brandNavy shrink-0 flex items-center justify-center text-[6px] text-white">🤖</div>
                     <div className="bg-slate-100 border border-slate-200 text-brandNavy text-[9px] p-2 rounded-2xl rounded-tl-sm text-left max-w-[80%] shadow-sm leading-normal">
-                      Hi, Welcome to CloudStore AI.<br />How can I help?
+                      Hi, Welcome to CloudSphere AI.<br />How can I help?
                     </div>
                   </div>
 
@@ -562,7 +562,7 @@ export function LandingPage() {
                 
                 {/* Active Logs Stack */}
                 <div className="flex flex-col gap-2">
-                  <p className="text-slate-500 select-none">$ cloudstore-ai query --source={selectedSource} --prompt="{simulations[selectedSource].query}"</p>
+                  <p className="text-slate-500 select-none">$ CloudSphere-ai query --source={selectedSource} --prompt="{simulations[selectedSource].query}"</p>
                   
                   {simulations[selectedSource].steps.map((step, idx) => {
                     const isPassed = simStep > idx;
@@ -1053,7 +1053,7 @@ export function LandingPage() {
               <h3 className="font-display font-extrabold text-2xl sm:text-3xl lg:text-[34px] tracking-tight leading-[1.1] text-brandNavy dark:text-white">
                 When Cloud Storage Checks Out,<br />
                 <span className="text-brandSky font-black bg-brandSky/25 dark:bg-brandSky/20 px-2 py-0.5 rounded-lg border border-brandSky/40 dark:border-brandSky/30 shadow-inner inline-block mt-1.5 align-middle">
-                  CloudStore AI
+                  CloudSphere AI
                 </span> Checks In!
               </h3>
               <div 
@@ -1130,7 +1130,7 @@ export function LandingPage() {
 
         {/* Centered copyright notice outside the card */}
         <p className="text-[10px] text-brandNavy/50 dark:text-slate-500 mt-6 select-none text-center font-bold">
-          Copyright © {new Date().getFullYear()} CloudStore AI Inc. All rights reserved
+          Copyright © {new Date().getFullYear()} CloudSphere AI Inc. All rights reserved
         </p>
       </footer>
     </div>

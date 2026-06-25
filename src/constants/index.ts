@@ -2,7 +2,7 @@ import type { FolderMeta, PipelineStep } from '@/types'
 
 // ─── App Constants ─────────────────────────────────────────────────────────
 
-export const APP_NAME = 'CloudStore AI' as const
+export const APP_NAME = 'CloudSphere AI' as const
 export const APP_TAGLINE = 'Intelligent Storage Query Engine' as const
 export const APP_VERSION = import.meta.env.VITE_APP_VERSION ?? '1.0.0'
 
@@ -107,7 +107,7 @@ export const SUGGESTED_QUERIES: string[] = [
 
 // ─── System Prompt for Claude ──────────────────────────────────────────────
 
-export const ANTHROPIC_SYSTEM_PROMPT = `You are CloudStore AI — an intelligent file query engine embedded in a cloud storage platform. You analyze file metadata and content to answer natural language queries from enterprise users.
+export const ANTHROPIC_SYSTEM_PROMPT = `You are CloudSphere AI — an intelligent file query engine embedded in a cloud storage platform. You analyze file metadata and content to answer natural language queries from enterprise users.
 
 Return ONLY a raw JSON object. No markdown fences, no explanation text before or after. Exact schema:
 {

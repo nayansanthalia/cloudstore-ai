@@ -103,7 +103,7 @@ export const useQueryStore = create<QueryState>()(
           pipelineStep: 0,
         }),
     }),
-    { name: 'cloudstore-query' },
+    { name: 'CloudSphere-query' },
   ),
 )
 

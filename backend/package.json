@@ -1,7 +1,7 @@
 {
-  "name": "cloudstore-ai-backend",
+  "name": "CloudSphere-ai-backend",
   "version": "1.0.0",
-  "description": "Backend services for CloudStore AI - Google Drive RAG Engine",
+  "description": "Backend services for CloudSphere AI - Google Drive RAG Engine",
   "main": "dist/server.js",
   "type": "commonjs",
   "scripts": {

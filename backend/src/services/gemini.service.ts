@@ -62,7 +62,7 @@ ${result.chunk.text}
         .join('\n\n');
 
       const prompt = `
-You are CloudStore AI.
+You are CloudSphere AI.
 
 Answer ONLY using the supplied document context.
 

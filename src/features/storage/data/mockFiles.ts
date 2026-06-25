@@ -147,7 +147,7 @@ export const MOCK_FILES: CloudFile[] = [
     dateISO: '2024-04-01',
     tags: ['sales', 'q4', 'revenue', 'analytics', 'quarterly'],
     content:
-      'Q4 2024 Sales Report. Total revenue: ₹4.8 Crore representing 28% year-on-year growth. Regional breakdown: Maharashtra ₹1.2 Cr, Karnataka ₹0.9 Cr, Delhi NCR ₹0.8 Cr, Tamil Nadu ₹0.6 Cr, Others ₹1.3 Cr. Product revenue: CloudStore Pro ₹2.1 Cr, Enterprise Plan ₹1.8 Cr, API tier ₹0.9 Cr. Customer churn rate: 4.2%. Net Promoter Score: 67. New enterprise customers acquired: 23. Total ARR: ₹19.2 Crore.',
+      'Q4 2024 Sales Report. Total revenue: ₹4.8 Crore representing 28% year-on-year growth. Regional breakdown: Maharashtra ₹1.2 Cr, Karnataka ₹0.9 Cr, Delhi NCR ₹0.8 Cr, Tamil Nadu ₹0.6 Cr, Others ₹1.3 Cr. Product revenue: CloudSphere Pro ₹2.1 Cr, Enterprise Plan ₹1.8 Cr, API tier ₹0.9 Cr. Customer churn rate: 4.2%. Net Promoter Score: 67. New enterprise customers acquired: 23. Total ARR: ₹19.2 Crore.',
   },
   {
     id: 12,
@@ -173,7 +173,7 @@ export const MOCK_FILES: CloudFile[] = [
     dateISO: '2024-02-20',
     tags: ['architecture', 'technical', 'system-design', 'rag', 'infrastructure'],
     content:
-      'CloudStore AI System Architecture Document v2.0. Core stack: Pinecone serverless vector database, OpenAI text-embedding-ada-002 for embeddings, Claude 3.5 Sonnet for LLM reasoning, AWS API Gateway, S3 + Google Cloud Storage for file storage, Redis for caching. Performance metrics: handles 10,000 queries per day, P95 query latency 2.3 seconds, embedding throughput 5,000 documents/hour, system uptime 99.97%. Security: SOC2 Type II, end-to-end encryption, zero-trust network.',
+      'CloudSphere AI System Architecture Document v2.0. Core stack: Pinecone serverless vector database, OpenAI text-embedding-ada-002 for embeddings, Claude 3.5 Sonnet for LLM reasoning, AWS API Gateway, S3 + Google Cloud Storage for file storage, Redis for caching. Performance metrics: handles 10,000 queries per day, P95 query latency 2.3 seconds, embedding throughput 5,000 documents/hour, system uptime 99.97%. Security: SOC2 Type II, end-to-end encryption, zero-trust network.',
   },
 
   // ─── Contracts ──────────────────────────────────────────────────────────
@@ -201,7 +201,7 @@ export const MOCK_FILES: CloudFile[] = [
     dateISO: '2024-02-15',
     tags: ['nda', 'legal', 'confidentiality', 'startup', 'partnership'],
     content:
-      'Mutual Non-Disclosure Agreement between CloudStore AI Pvt Ltd and ABC Tech Innovations Pvt Ltd. Agreement duration: 3 years from signing date. Confidential information scope: product roadmap details, customer lists, pricing strategies, proprietary algorithms, financial data. Breach penalty clause: ₹50 Lakhs per breach. Governing law: Indian law, jurisdiction: Mumbai High Court. Signed February 15, 2024.',
+      'Mutual Non-Disclosure Agreement between CloudSphere AI Pvt Ltd and ABC Tech Innovations Pvt Ltd. Agreement duration: 3 years from signing date. Confidential information scope: product roadmap details, customer lists, pricing strategies, proprietary algorithms, financial data. Breach penalty clause: ₹50 Lakhs per breach. Governing law: Indian law, jurisdiction: Mumbai High Court. Signed February 15, 2024.',
   },
   {
     id: 16,
@@ -229,7 +229,7 @@ export const MOCK_FILES: CloudFile[] = [
     dateISO: '2024-04-15',
     tags: ['rag', 'ai', 'pipeline', 'design', 'architecture', 'embeddings'],
     content:
-      'RAG Pipeline Design Document for CloudStore AI. Seven-phase architecture: Phase 1 Document ingestion and parsing (PDF, DOCX, XLSX support), Phase 2 Intelligent chunking at 512 tokens with 20% overlap using sliding window, Phase 3 Embedding generation via OpenAI text-embedding-ada-002 (1536 dimensions), Phase 4 Vector storage in Pinecone with metadata filtering, Phase 5 Top-5 cosine similarity retrieval with MMR diversity, Phase 6 Cohere Rerank v3 for precision reranking, Phase 7 Claude 3.5 Sonnet for final answer generation with chain-of-thought.',
+      'RAG Pipeline Design Document for CloudSphere AI. Seven-phase architecture: Phase 1 Document ingestion and parsing (PDF, DOCX, XLSX support), Phase 2 Intelligent chunking at 512 tokens with 20% overlap using sliding window, Phase 3 Embedding generation via OpenAI text-embedding-ada-002 (1536 dimensions), Phase 4 Vector storage in Pinecone with metadata filtering, Phase 5 Top-5 cosine similarity retrieval with MMR diversity, Phase 6 Cohere Rerank v3 for precision reranking, Phase 7 Claude 3.5 Sonnet for final answer generation with chain-of-thought.',
   },
   {
     id: 18,
@@ -242,7 +242,7 @@ export const MOCK_FILES: CloudFile[] = [
     dateISO: '2024-04-20',
     tags: ['roadmap', 'product', 'strategy', 'planning', '2024', '2025'],
     content:
-      'CloudStore AI Product Roadmap 2024 to 2025. Q2 2024: Multi-cloud support (AWS S3 + GCS + Azure Blob), batch file processing. Q3 2024: Mobile applications (iOS + Android), voice query interface, Slack bot integration. Q4 2024: Enterprise SSO (SAML/OIDC), detailed audit logs, role-based access control, SOC2 certification. Q1 2025: On-premise deployment option, custom LLM fine-tuning, API v2 with webhooks. Annual target: 1,000 enterprise customers and ₹20 Crore ARR by December 2024.',
+      'CloudSphere AI Product Roadmap 2024 to 2025. Q2 2024: Multi-cloud support (AWS S3 + GCS + Azure Blob), batch file processing. Q3 2024: Mobile applications (iOS + Android), voice query interface, Slack bot integration. Q4 2024: Enterprise SSO (SAML/OIDC), detailed audit logs, role-based access control, SOC2 certification. Q1 2025: On-premise deployment option, custom LLM fine-tuning, API v2 with webhooks. Annual target: 1,000 enterprise customers and ₹20 Crore ARR by December 2024.',
   },
   {
     id: 19,

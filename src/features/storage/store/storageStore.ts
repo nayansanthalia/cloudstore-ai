@@ -274,7 +274,7 @@ export const useStorageStore = create<StorageState>()(
         }
       }
     })),
-    { name: 'cloudstore-storage' },
+    { name: 'CloudSphere-storage' },
   ),
 )
 

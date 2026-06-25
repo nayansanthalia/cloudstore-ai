@@ -30,7 +30,7 @@ export class CloudflareService {
         messages: [
           {
             role: "system",
-            content: "You are CloudStore AI."
+            content: "You are CloudSphere AI."
           },
           {
             role: "user",

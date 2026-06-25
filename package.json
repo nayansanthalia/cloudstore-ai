@@ -1,8 +1,8 @@
 {
-  "name": "cloudstore-ai",
+  "name": "CloudSphere-ai",
   "private": true,
   "version": "1.0.0",
-  "description": "CloudStore AI – Intelligent Storage Query Engine powered by RAG + LLM",
+  "description": "CloudSphere AI – Intelligent Storage Query Engine powered by RAG + LLM",
   "type": "module",
   "scripts": {
     "dev": "vite",

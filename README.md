@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/CloudStore-AI-6366f1?style=for-the-badge&logo=cloudflare&logoColor=white" alt="CloudStore AI" />
+  <img src="https://img.shields.io/badge/CloudSphere-AI-6366f1?style=for-the-badge&logo=cloudflare&logoColor=white" alt="CloudSphere AI" />
   <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React 18" />
   <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript 5" />
   <img src="https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 5" />
   <img src="https://img.shields.io/badge/Workers_AI-Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloudflare Workers AI" />
 </p>
 
-<h1 align="center">☁️ CloudStore AI</h1>
+<h1 align="center">☁️ CloudSphere AI</h1>
 
 <p align="center">
   <strong>Intelligent Storage Query Engine powered by RAG + Cloudflare Workers AI</strong>
@@ -147,8 +147,8 @@ User Query ─→ Embed Query (Cloudflare bge-base-en-v1.5) ─→ Vector Search
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/cloudstore-ai.git
-cd cloudstore-ai
+git clone https://github.com/your-username/CloudSphere-ai.git
+cd CloudSphere-ai
 ```
 
 ### 2. Setup the Backend
@@ -216,7 +216,7 @@ The app will open at `http://localhost:3000`.
 ## 📁 Project Structure
 
 ```
-cloudstore-ai/
+CloudSphere-ai/
 ├── backend/                          # Express.js API server
 │   ├── src/
 │   │   ├── app.ts                    # Express app setup (CORS, middleware, routes)

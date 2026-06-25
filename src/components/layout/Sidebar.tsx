@@ -187,7 +187,7 @@ export const Sidebar = memo(({ activeTab, onTabChange, isCollapsed, onToggleColl
             ☁
           </div>
           <span className="font-display font-bold text-sm text-brandNavy dark:text-white tracking-tight">
-            CloudStore AI
+            CloudSphere AI
           </span>
         </div>
         <button
